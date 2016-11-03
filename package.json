@@ -1,0 +1,11 @@
+{
+  "name": "arxivum",
+  "version": "0.1.0",
+  "description": "Self hosted cloud to save files and share them securely",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alberto Fernandez (Bertofer)",
+  "license": "MIT"
+}
