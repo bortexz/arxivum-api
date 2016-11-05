@@ -4,8 +4,22 @@
   "description": "Self hosted cloud to save files and share them securely",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DEBUG=arxivum:* node --harmony-async-await ./server/",
+    "start-watch": "DEBUG=arxivum:* nodemon --watch ./server/ --ignore ./client/* --exec 'npm run start'"
   },
   "author": "Alberto Fernandez (Bertofer)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^0.8.7",
+    "debug": "^2.2.0",
+    "koa": "^2.0.0",
+    "koa-bodyparser": "^3.2.0",
+    "koa-router": "^7.0.1",
+    "mongoose": "^4.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "standard": "^8.5.0"
+  }
 }
