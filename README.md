@@ -1,6 +1,9 @@
 # arxivum
 Self hosted cloud to store files and share them.
 
+## In progress
+This project is still in progress
+
 ## ENV variables config
 JWT_SECRET: secret to use for the json web token
 
