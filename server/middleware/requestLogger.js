@@ -7,7 +7,7 @@ module.exports = async (ctx, next) => {
     await next()
   } finally {
     message += `RESPONSE:: status: ${ctx.response.status} `
-    if (ctx.status >= 400 && ctx.status <= 500) message += `error: ${ctx.body.message} `
+    if (ctx.status >= 400 && ctx.status <= 500 && ctx.body) message += `error: ${ctx.body.message} `
     message += `TIME:: ${new Date().getTime() - timestamp}ms`
     log(message)
   }

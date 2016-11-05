@@ -3,6 +3,23 @@ const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
 const SALT_FACTOR = 10
 
+const userSchema = new Schema({
+  name: String,
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  admin: {type: Boolean, default: false},
+  created_at: Date,
+  updated_at: Date
+})
+
+userSchema.pre('save', updatePasswordIfDifferent)
+userSchema.pre('save', updateUpdated)
+userSchema.methods.checkPassword = checkPassword
+
+const User = mongoose.model('User', userSchema)
+
+module.exports = User
+
 function updateUpdated (next) {
   var currentDate = new Date()
 
@@ -32,18 +49,11 @@ function updatePasswordIfDifferent (next) {
   })
 }
 
-const userSchema = new Schema({
-  name: String,
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  admin: {type: Boolean, default: false},
-  created_at: Date,
-  updated_at: Date
-})
-
-userSchema.pre('save', updatePasswordIfDifferent)
-userSchema.pre('save', updateUpdated)
-
-const User = mongoose.model('User', userSchema)
-
-module.exports = User
+function checkPassword (password) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, this.password, function (err, isMatch) {
+      if (err) reject(err)
+      resolve(isMatch)
+    })
+  })
+}

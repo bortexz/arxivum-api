@@ -2,11 +2,15 @@ const User = require('./model')
 const log = require('../../modules/logger')('arxivum:users:controller')
 
 module.exports = {
+  // Main endpoint functions
   createUser,
   getUser,
   getUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  // Other useful middlewares
+  isAdmin,
+  isSameUserOrAdmin
 }
 
 async function createUser (ctx) {
@@ -28,14 +32,14 @@ async function createUser (ctx) {
 async function getUser (ctx) {
   try {
     const user = await User
-      .find({_id: ctx.params.id})
+      .findOne({_id: ctx.params.id})
       .select('email created_at updated_at admin')
 
-    if (user.length === 0) {
+    if (user === null) {
       throw new Error('UserNotFound')
     }
 
-    ctx.body = user[0]
+    ctx.body = user
   } catch (e) {
     if (e.name === 'CastError') {
       ctx.throw(400, 'Invalid ID')
@@ -67,3 +71,15 @@ async function updateUser (ctx) {
 async function deleteUser (ctx) {
 
 }
+
+async function isAdmin (ctx, next) {
+  if (ctx.state.user.admin) await next()
+  else ctx.throw(401, 'You need to be admin to view this resource')
+}
+
+
+async function isSameUserOrAdmin (ctx, next) {
+  if (ctx.state.user.admin || (ctx.state.user.id === ctx.request.params.id)) await next()
+  else ctx.throw(401, 'You cannot access this resource')
+}
+

@@ -10,15 +10,15 @@ require('./modules/database')
 const logger = require('./middleware/requestLogger')
 app.use(logger)
 
-const bodyParser = require('koa-bodyparser')
-app.use(bodyParser())
-
 const errorHandler = require('./middleware/errorHandler')
 app.use(errorHandler)
 
-// Init routes
-const mainRouter = require('./modules/mainRouter')
-app.use(mainRouter.routes())
+const bodyParser = require('koa-bodyparser')
+app.use(bodyParser())
+
+// Init API routes
+const apiRouter = require('./modules/apiRouter')
+app.use(apiRouter.routes())
 
 app.listen(3000)
 
