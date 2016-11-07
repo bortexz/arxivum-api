@@ -4,8 +4,7 @@ const User = require('./model')
 const log = require('../../modules/logger')('arxivum:users:authenticate')
 
 async function authenticate (ctx) {
-  const email = ctx.request.body.email
-  const password = ctx.request.body.password
+  const {email, password} = ctx.request.body
   const user = await User.findOne({email})
     .select('email password admin')
 

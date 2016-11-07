@@ -13,6 +13,9 @@ module.exports = {
   isSameUserOrAdmin
 }
 
+// Screen to use when returning results
+const USER_SCREEN = 'name email created_at updated_at admin'
+
 async function createUser (ctx) {
   const body = ctx.request.body
   if (body.admin) delete ctx.body.admin
@@ -33,7 +36,7 @@ async function getUser (ctx) {
   try {
     const user = await User
       .findOne({_id: ctx.params.id})
-      .select('email created_at updated_at admin')
+      .select(USER_SCREEN)
 
     if (user === null) {
       throw new Error('UserNotFound')
@@ -56,7 +59,7 @@ async function getUsers (ctx) {
   try {
     const users = await User
       .find()
-      .select('email created_at updated_at admin')
+      .select(USER_SCREEN)
     ctx.body = users
   } catch (e) {
     log(e)
@@ -65,11 +68,31 @@ async function getUsers (ctx) {
 }
 
 async function updateUser (ctx) {
-
+  // Only name and password can be updated for now
+  const {name, password} = ctx.request.body
+  try {
+    const modifiedUser = await User
+      .findOneAndUpdate({_id: ctx.state.user.id},
+        {name, password},
+        {fields: USER_SCREEN, new: true})
+    ctx.body = modifiedUser
+  } catch (e) {
+    log(e)
+    throw new Error()
+  }
 }
 
 async function deleteUser (ctx) {
-
+  try {
+    // Only remove if not admin
+    const user = await User.findOne({_id: ctx.request.params.id})
+    if (user.admin) throw new Error('CannotRemoveAdminUser')
+    await user.remove()
+  } catch (e) {
+    if (e.message === 'CannotRemoveAdminUser') ctx.throw(400, 'Cannot remove admin user')
+    log(e)
+    throw new Error()
+  }
 }
 
 async function isAdmin (ctx, next) {
