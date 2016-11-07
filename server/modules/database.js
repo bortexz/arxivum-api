@@ -1,12 +1,9 @@
 const log = require('./logger')('arxivum:database')
 const mongoose = require('mongoose')
 mongoose.Promise = Promise
-const dbUrl = process.env.DATABASE_URL || 'mongodb://localhost/arxivum-dev'
+const {DATABASE_URL, ADMIN_EMAIL, ADMIN_PASSWORD} = require('../config')
 
-const adminEmail = process.env.ADMIN_EMAIL || 'admin'
-const adminPassword = process.env.ADMIN_PASSWORD || 'admin'
-
-mongoose.connect(dbUrl)
+mongoose.connect(DATABASE_URL)
 
 // Search for admin, if not, create it
 const User = require('../features/users/model')
@@ -16,8 +13,8 @@ async function createAdminIfNeeded () {
   if (users.length === 0) {
     // create admin
     const admin = new User({
-      email: adminEmail,
-      password: adminPassword,
+      email: ADMIN_EMAIL,
+      password: ADMIN_PASSWORD,
       admin: 'true'
     })
     try {
