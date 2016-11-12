@@ -15,6 +15,7 @@
     "debug": "^2.2.0",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
+    "koa-cors": "0.0.16",
     "koa-jsonwebtoken": "bertofer/koa-jsonwebtoken",
     "koa-router": "^7.0.1",
     "mongoose": "^4.6.6"

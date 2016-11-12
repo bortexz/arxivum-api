@@ -13,6 +13,4 @@ apiRouter.use('/users', isAuthenticated, usersRouter.routes(), usersRouter.allow
 const authenticate = require('../features/users/authenticate')
 apiRouter.post('/authenticate', authenticate)
 
-
-
 module.exports = apiRouter

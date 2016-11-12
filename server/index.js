@@ -1,10 +1,14 @@
 const Koa = require('koa')
+const cors = require('koa-cors')
 const log = require('./modules/logger')('arxivum:index')
 
 const app = new Koa()
 
 // Init database
 require('./modules/database')
+
+// TODO: Remove by default, allow by options.
+app.use(cors())
 
 // Global middlewares
 const logger = require('./middleware/requestLogger')
