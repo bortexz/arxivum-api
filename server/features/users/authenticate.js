@@ -13,14 +13,16 @@ async function authenticate (ctx) {
       throw new Error('UserDoesNotExist')
     }
     if (await user.checkPassword(password)) {
+      delete user.password
       const token = {
         id: user._id,
-        email: user.email,
         admin: user.admin
       }
       ctx.body = {
         token: sign(token, secret, { expiresIn: '7d' }),
-        user_id: user._id
+        id: user._id,
+        email: user.email,
+        admin: user.admin
       }
     } else {
       throw new Error('IncorrectPassword')
