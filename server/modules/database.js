@@ -6,7 +6,7 @@ const {DATABASE_URL, ADMIN_EMAIL, ADMIN_PASSWORD} = require('../config')
 mongoose.connect(DATABASE_URL)
 
 // Search for admin, if not, create it
-const User = require('../features/users/model')
+const User = require('../services/users/model')
 
 async function createAdminIfNeeded () {
   const users = await User.find({admin: true})

@@ -5,6 +5,9 @@ const fileMiddleware = require('./middleware')
 filesRouter.post('/',
   // userMiddleware.isAdmin,
   fileMiddleware.loadFiles,
-  fileMiddleware.encryptAndStore)
+  fileMiddleware.encryptAndStore,
+  fileMiddleware.generateTorrents,
+  fileMiddleware.saveModels,
+  fileMiddleware.completeUpdate)
 
 module.exports = filesRouter

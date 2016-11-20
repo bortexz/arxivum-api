@@ -7,6 +7,7 @@ const fileSchema = new Schema({
   torrent: {type: Buffer, required: true},
   description: {type: String},
   created: {type: Date, default: Date.now},
+  encrypted_name: {type: String, required: true},
   encryption_key: {type: Buffer, required: true}
 })
 

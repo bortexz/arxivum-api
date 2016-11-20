@@ -1,5 +1,6 @@
 const User = require('./model')
 const log = require('../../modules/logger')('arxivum:users:middleware')
+const pick = require('lodash.pick')
 
 module.exports = {
   // Main endpoint functions
@@ -14,7 +15,7 @@ module.exports = {
 }
 
 // Screen to use when returning results
-const USER_SCREEN = 'name email created_at updated_at admin'
+const USER_SCREEN = '_id name email created_at updated_at admin'
 
 async function createUser (ctx) {
   const body = ctx.request.body
@@ -22,7 +23,7 @@ async function createUser (ctx) {
   const newUser = new User(body)
   try {
     const userSaved = await newUser.save()
-    ctx.body = userSaved
+    ctx.body = pick(userSaved, USER_SCREEN.split(' '))
   } catch (e) {
     if (e.code === 11000) {
       ctx.throw(400, 'This user already exists')
