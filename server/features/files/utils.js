@@ -1,3 +1,5 @@
+let createTorrent = require('create-torrent')
+
 function fsStreamPromise (stream) {
   return new Promise((resolve, reject) => {
     stream.on('finish', () => resolve())
@@ -5,6 +7,15 @@ function fsStreamPromise (stream) {
   })
 }
 
+function createTorrentPromise (path, opts) {
+  return new Promise((resolve, reject) => {
+    createTorrent(path, opts, (err, torrent) => {
+      if (err) return reject(err)
+      else resolve(torrent)
+    })
+  })
+}
 module.exports = {
-  fsStreamPromise
+  fsStreamPromise,
+  createTorrentPromise
 }

@@ -5,7 +5,8 @@ const config = {
   ADMIN_EMAIL: process.env.ADMIN_EMAIL || 'admin@admin',
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || 'admin',
   JWT_SECRET: process.env.JWT_SECRET || 's0m3th1nG_R4nd0M',
-  WEBSEED_FOLDER: process.env.WEBSEED_FOLDER || path.resolve(__dirname, '../../files')
+  WEBSEED_FOLDER: process.env.WEBSEED_FOLDER || path.resolve(__dirname, '../../files'),
+  PUBLIC_URL: process.env.PUBLIC_URL || 'http://localhost:3000/'
 }
 
 module.exports = config

@@ -6,8 +6,9 @@ const qcrypto = require('crypto-promise')
 const crypto = require('crypto')
 const log = require('../../modules/logger')('arxivum:files:middleware')
 const uuid = require('uuid')
-const {fsStreamPromise} = require('./utils')
-const {WEBSEED_FOLDER} = require('../../config')
+const {fsStreamPromise, createTorrentPromise} = require('./utils')
+const {WEBSEED_FOLDER, PUBLIC_URL} = require('../../config')
+const urljoin = require('url-join')
 
 const ENCRYPT_ALGO = 'aes-256-cbc'
 
@@ -18,8 +19,8 @@ module.exports = {
   // Update specific
   loadFiles,
   encryptAndStore,
-  generateTorrent,
-  saveModel,
+  generateTorrents,
+  saveModels,
   updateComplete
 }
 
@@ -39,12 +40,22 @@ async function deleteFile (ctx, next) {
 }
 
 // UPDATE Functions
+
+/**
+ * It parses the upload of the files, and store the
+ * files inside ctx.files
+ */
 async function loadFiles (ctx, next) {
   const {files} = await asyncBusboy(ctx.req)
   ctx.files = files
   await next()
 }
 
+/**
+ * Takes the files in ctx.files, and for each one
+ * encrypts the file and saves in storage the encrypted
+ * version.
+ */
 async function encryptAndStore (ctx, next) {
   let writeFilePromises = []
 
@@ -76,19 +87,40 @@ async function encryptAndStore (ctx, next) {
 
   try {
     await Promise.all(writeFilePromises)
-    ctx.status = 200
   } catch (e) {
     log('e', e)
     ctx.throw(500, 'Cannot write encrypted file to folder')
   }
   await next()
 }
+/**
+ * Takes context.files and generates a torrent object
+ * for each of them. Stored as a buffer under files[].torrent
+ */
+async function generateTorrents (ctx, next) {
+  for (let file of ctx.files) {
+    const downloadUrl = urljoin(PUBLIC_URL, 'webseed', file.encrypted_name)
+    const trackerUrl = urljoin(PUBLIC_URL, 'tracker')
+    const opts = {
+      name: file.filename,
+      // createdBy: process.env.AUTHOR,
+      creationDate: Date.now(),
+      private: true,
+      announceList: [[trackerUrl]],
+      urlList: downloadUrl
+    }
 
-async function generateTorrent (ctx, next) {
-
+    try {
+      file.torrent = await createTorrentPromise(file.encrypted_file_path, opts)
+    } catch (e) {
+      log(e)
+      ctx.throw(500, 'Error while generating torrent of file')
+    }
+  }
+  await next()
 }
 
-async function saveModel (ctx, next) {
+async function saveModels (ctx, next) {
 
 }
 
