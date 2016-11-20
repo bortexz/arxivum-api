@@ -11,14 +11,17 @@
   "author": "Alberto Fernandez (Bertofer)",
   "license": "MIT",
   "dependencies": {
+    "async-busboy": "^0.3.3",
     "bcrypt": "^0.8.7",
+    "crypto-promise": "^1.0.2",
     "debug": "^2.2.0",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
     "koa-cors": "0.0.16",
     "koa-jsonwebtoken": "bertofer/koa-jsonwebtoken",
     "koa-router": "^7.0.1",
-    "mongoose": "^4.6.6"
+    "mongoose": "^4.6.6",
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",

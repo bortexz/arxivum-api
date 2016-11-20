@@ -1,5 +1,5 @@
 const User = require('./model')
-const log = require('../../modules/logger')('arxivum:users:controller')
+const log = require('../../modules/logger')('arxivum:users:middleware')
 
 module.exports = {
   // Main endpoint functions

@@ -9,8 +9,12 @@ const isAuthenticated = require('../middleware/authentication').isAuthenticated
 const usersRouter = require('../features/users/router')
 apiRouter.use('/users', isAuthenticated, usersRouter.routes(), usersRouter.allowedMethods())
 
+const filesRouter = require('../features/files/router')
+apiRouter.use('/files', /* isAuthenticated, */ filesRouter.routes(), filesRouter.allowedMethods())
+
 // Auth
 const authenticate = require('../features/users/authenticate')
 apiRouter.post('/authenticate', authenticate)
+
 
 module.exports = apiRouter
