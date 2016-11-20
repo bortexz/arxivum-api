@@ -1,4 +1,4 @@
-const File = require('./model')
+// const File = require('./model')
 const asyncBusboy = require('async-busboy')
 const path = require('path')
 const fs = require('fs')
@@ -6,6 +6,8 @@ const qcrypto = require('crypto-promise')
 const crypto = require('crypto')
 const log = require('../../modules/logger')('arxivum:files:middleware')
 const uuid = require('uuid')
+const {fsStreamPromise} = require('./utils')
+const {WEBSEED_FOLDER} = require('../../config')
 
 const ENCRYPT_ALGO = 'aes-256-cbc'
 
@@ -39,56 +41,48 @@ async function deleteFile (ctx, next) {
 // UPDATE Functions
 async function loadFiles (ctx, next) {
   const {files} = await asyncBusboy(ctx.req)
-  log('arrives here')
   ctx.files = files
   await next()
 }
 
 async function encryptAndStore (ctx, next) {
-  // ctx.files exist
+  let writeFilePromises = []
 
-  // SAVE NORMAL FILE
+  // Normally, we will receive 1 request per file
   for (let file of ctx.files) {
     // Generate random filename for the encrypted file.
     file.encrypted_name = `${uuid()}.enc`
 
-    const randomBytes = await qcrypto.randomBytes(256)
-    file.encryption_key = randomBytes
-
-    const encryptCipher = crypto.createCipher(ENCRYPT_ALGO, file.encryption_key)
-
-    const encryptedFilePath = path.resolve(__dirname, '../../../files', file.encrypted_name)
     try {
-      const encryptStream = file.pipe(encryptCipher).pipe(fs.createWriteStream(encryptedFilePath))
+      // Random Buffer encryption_key
+      const randomBytes = await qcrypto.randomBytes(256)
+      file.encryption_key = randomBytes
 
-      encryptStream.on('finish', () => {
-        log('Starting decryption!!!')
+      const encryptCipher = crypto.createCipher(ENCRYPT_ALGO, file.encryption_key)
 
-        const decryptCipher = crypto.createDecipher(ENCRYPT_ALGO, file.encryption_key)
-        const decryptedFilePath = path.resolve(__dirname, '../../../files', file.filename)
-        const decryptStream = fs.createReadStream(encryptedFilePath).pipe(decryptCipher).pipe(fs.createWriteStream(decryptedFilePath))
-        decryptStream.on('end', () => {
-          log('end decrypting!')
-          ctx.status = 200
-          next()
-        })
-      })
+      file.encrypted_file_path = path.resolve(WEBSEED_FOLDER, file.encrypted_name)
+
+      const writeFileStream = file
+        .pipe(encryptCipher)
+        .pipe(fs.createWriteStream(file.encrypted_file_path))
+
+      const writeFilePromise = fsStreamPromise(writeFileStream)
+      writeFilePromises.push(writeFilePromise)
     } catch (e) {
-      ctx.throw(new Error())
-      log('error', e)
+      log('e', e)
+      ctx.throw(500, new Error('Problem encrypting or writing file'))
     }
-    // file.pipe(fs.createWriteStream(saveTo))
   }
 
-    // SAVE ENCRYPTED
-
-    // SAVE DECRYPTED
+  try {
+    await Promise.all(writeFilePromises)
+    ctx.status = 200
+  } catch (e) {
+    log('e', e)
+    ctx.throw(500, 'Cannot write encrypted file to folder')
+  }
+  await next()
 }
-
-// files.forEach(file => {
-//   var saveTo = path.resolve(__dirname, '../../files', file.filename)
-//   file.pipe(fs.createWriteStream(saveTo))
-// })
 
 async function generateTorrent (ctx, next) {
 
