@@ -57,10 +57,10 @@ async function getFile (ctx, next) {
  */
 async function getFiles (ctx, next) {
   try {
-    const users = await File
+    const files = await File
       .find()
       .select(FILE_SCREEN)
-    ctx.body = users
+    ctx.body = files
   } catch (e) {
     log(e)
     throw new Error()
