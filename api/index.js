@@ -1,6 +1,6 @@
 const Koa = require('koa')
 const cors = require('koa-cors')
-const log = require('./modules/logger')('arxivum:index')
+const log = require('./modules/logger')('arxivum:api')
 
 const app = new Koa()
 

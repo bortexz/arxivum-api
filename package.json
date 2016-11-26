@@ -5,22 +5,26 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=arxivum:* node --harmony-async-await ./server/",
-    "start-watch": "DEBUG=arxivum:* nodemon --watch ./server/ --ignore ./client/* --exec 'npm run start'"
+    "start": "DEBUG=arxivum:* node --harmony-async-await .",
+    "start-watch": "DEBUG=arxivum:* nodemon --watch . --exec 'npm run start'"
   },
   "author": "Alberto Fernandez (Bertofer)",
   "license": "MIT",
   "dependencies": {
     "async-busboy": "^0.3.3",
     "bcrypt": "^0.8.7",
+    "bittorrent-tracker": "^8.0.12",
     "create-torrent": "^3.25.1",
     "crypto-promise": "^1.0.2",
     "debug": "^2.2.0",
+    "http-proxy": "^1.15.2",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
     "koa-cors": "0.0.16",
     "koa-jsonwebtoken": "^1.1.6",
+    "koa-proxy": "^0.6.0",
     "koa-router": "^7.0.1",
+    "koa-static": "^2.0.0",
     "lodash.pick": "^4.4.0",
     "mongoose": "^4.6.6",
     "url-join": "^1.1.0",
