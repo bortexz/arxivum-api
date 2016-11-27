@@ -15,6 +15,7 @@ function createTorrentPromise (path, opts) {
     })
   })
 }
+
 module.exports = {
   fsStreamPromise,
   createTorrentPromise

@@ -1,6 +1,6 @@
 const sign = require('koa-jsonwebtoken').sign
 const secret = require('../../middleware/authentication').secret
-const User = require('./model')
+const User = require('../users/model')
 const log = require('../../modules/logger')('arxivum:users:authenticate')
 
 async function authenticate (ctx) {
@@ -39,4 +39,6 @@ async function authenticate (ctx) {
   }
 }
 
-module.exports = authenticate
+module.exports = {
+  authenticate
+}

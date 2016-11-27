@@ -7,7 +7,7 @@ const crypto = require('crypto')
 const log = require('../../modules/logger')('arxivum:files:middleware')
 const uuid = require('uuid')
 const {fsStreamPromise, createTorrentPromise} = require('./utils')
-const {WEBSEED_FOLDER, PUBLIC_URL, PUBLIC_TRACKER_URL} = require('../../config')
+const {WEBSEED_FOLDER, PUBLIC_API_URL, PUBLIC_TRACKER_URL} = require('../../config')
 const urljoin = require('url-join')
 const pick = require('lodash.pick')
 
@@ -151,7 +151,7 @@ async function encryptAndStore (ctx, next) {
  */
 async function generateTorrents (ctx, next) {
   for (let file of ctx.files) {
-    const downloadUrl = urljoin(PUBLIC_URL, 'webseed', file.encrypted_name)
+    const downloadUrl = urljoin(PUBLIC_API_URL, 'webseed', file.encrypted_name)
     const trackerUrl = urljoin(PUBLIC_TRACKER_URL, 'tracker', 'announce')
     const opts = {
       name: file.filename,

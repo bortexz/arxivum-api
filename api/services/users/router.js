@@ -1,12 +1,13 @@
 const KoaRouter = require('koa-router')
 const usersRouter = new KoaRouter()
-const userMiddleware = require('./middleware')
+const {getUsers, getUser, deleteUser, updateUser, createUser} = require('./middleware')
+const {isSameUserOrAdmin, isAdmin} = require('../../middleware/authorization.js')
 
-usersRouter.get('/', userMiddleware.isAdmin, userMiddleware.getUsers) // needs admin
-usersRouter.get('/:id', userMiddleware.isSameUserOrAdmin, userMiddleware.getUser) // needs admin or same user
-usersRouter.post('/', userMiddleware.createUser) // Needs to have invitation type register for same email, and invite token?
-usersRouter.del('/:id', userMiddleware.isAdmin, userMiddleware.deleteUser)
-usersRouter.put('/:id', userMiddleware.isSameUserOrAdmin, userMiddleware.updateUser)
+usersRouter.get('/', isAdmin, getUsers) // needs admin
+usersRouter.get('/:id', isSameUserOrAdmin, getUser) // needs admin or same user
+usersRouter.post('/', createUser) // Needs to have invitation type register for same email, and invite token?
+usersRouter.del('/:id', isAdmin, deleteUser)
+usersRouter.put('/:id', isSameUserOrAdmin, updateUser)
 
 module.exports = usersRouter
 

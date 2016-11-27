@@ -1,19 +1,28 @@
 const KoaRouter = require('koa-router')
 const filesRouter = new KoaRouter()
-const fileMiddleware = require('./middleware')
-// const userMiddleware = require('../users/middleware')
+const { isAdmin } = require('../../middleware/authorization')
+const {
+  getFile,
+  getFiles,
+  deleteFile,
+  // Upload functions
+  loadFiles,
+  encryptAndStore,
+  generateTorrents,
+  saveModels,
+  completeUpdate
+} = require('./middleware')
 
-
-filesRouter.get('/:id', fileMiddleware.getFile)
-filesRouter.get('/', fileMiddleware.getFiles)
-filesRouter.del('/:id', fileMiddleware.deleteFile)
+filesRouter.get('/:id', getFile)
+filesRouter.get('/', getFiles)
+filesRouter.del('/:id', deleteFile)
 
 filesRouter.post('/',
-  // userMiddleware.isAdmin,
-  fileMiddleware.loadFiles,
-  fileMiddleware.encryptAndStore,
-  fileMiddleware.generateTorrents,
-  fileMiddleware.saveModels,
-  fileMiddleware.completeUpdate)
+  isAdmin,
+  loadFiles,
+  encryptAndStore,
+  generateTorrents,
+  saveModels,
+  completeUpdate)
 
 module.exports = filesRouter

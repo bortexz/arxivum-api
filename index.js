@@ -19,6 +19,7 @@ const server = http.createServer((req, res) => {
       target: 'http://localhost:3000'
     })
   } else if (resource === 'webseed') {
+    console.log('before passing to webseed?')
     proxy.web(req, res, {
       target: 'http://localhost:5000'
     })
