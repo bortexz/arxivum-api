@@ -7,7 +7,11 @@ const crypto = require('crypto')
 const log = require('../../modules/logger')('arxivum:files:middleware')
 const uuid = require('uuid')
 const {fsStreamPromise, createTorrentPromise} = require('./utils')
-const {WEBSEED_FOLDER, PUBLIC_API_URL, PUBLIC_TRACKER_URL} = require('../../config')
+const {
+  WEBSEED_FOLDER,
+  PUBLIC_API_URL,
+  PUBLIC_TRACKER_URL
+} = require('../../config')
 const urljoin = require('url-join')
 const pick = require('lodash.pick')
 
@@ -123,9 +127,11 @@ async function encryptAndStore (ctx, next) {
       const randomBytes = await qcrypto.randomBytes(256)
       file.encryption_key = randomBytes
 
-      const encryptCipher = crypto.createCipher(ENCRYPT_ALGO, file.encryption_key)
+      const encryptCipher =
+        crypto.createCipher(ENCRYPT_ALGO, file.encryption_key)
 
-      file.encrypted_file_path = path.resolve(WEBSEED_FOLDER, file.encrypted_name)
+      file.encrypted_file_path =
+        path.resolve(WEBSEED_FOLDER, file.encrypted_name)
 
       const writeFileStream = file
         .pipe(encryptCipher)
@@ -202,5 +208,7 @@ async function saveModels (ctx, next) {
  * Generates the body of the response
  */
 async function completeUpdate (ctx, next) {
-  ctx.body = ctx.files.map(file => pick(file.model_saved, FILE_SCREEN.split(' ')))
+  ctx.body = ctx.files.map(
+    file => pick(file.model_saved, FILE_SCREEN.split(' '))
+  )
 }

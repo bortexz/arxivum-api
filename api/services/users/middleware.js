@@ -87,7 +87,9 @@ async function deleteUser (ctx) {
     if (user.admin) throw new Error('CannotRemoveAdminUser')
     await user.remove()
   } catch (e) {
-    if (e.message === 'CannotRemoveAdminUser') ctx.throw(400, 'Cannot remove admin user')
+    if (e.message === 'CannotRemoveAdminUser') {
+      ctx.throw(400, 'Cannot remove admin user')
+    }
     log(e)
     throw new Error()
   }
