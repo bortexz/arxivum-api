@@ -23,7 +23,9 @@ module.exports = {
   encryptAndStore,
   generateTorrents,
   saveModels,
-  completeUpdate
+  completeUpdate,
+  // constants
+  FILE_SCREEN
 }
 
 /**

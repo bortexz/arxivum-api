@@ -5,9 +5,19 @@ const SALT_FACTOR = 10
 
 const userSchema = new Schema({
   name: String,
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  admin: {type: Boolean, default: false},
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  admin: {
+    type: Boolean,
+    default: false
+  },
   created_at: Date,
   updated_at: Date
 })
