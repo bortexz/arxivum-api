@@ -20,7 +20,6 @@ const FILE_SCREEN = '_id name size torrent description'
 
 module.exports = {
   getFile,
-  getFiles,
   deleteFile,
   // Update specific
   loadFiles,
@@ -53,21 +52,6 @@ async function getFile (ctx, next) {
     if (e.message === 'FileNotFound') {
       ctx.throw(404, 'File not found')
     }
-    log(e)
-    throw new Error()
-  }
-}
-
-/**
- * Get all the files
- */
-async function getFiles (ctx, next) {
-  try {
-    const files = await File
-      .find()
-      .select(FILE_SCREEN)
-    ctx.body = files
-  } catch (e) {
     log(e)
     throw new Error()
   }

@@ -35,10 +35,17 @@ async function getFolders (ctx, next) {
  * to maintain consistency.
  */
 async function getFolder (ctx, next) {
-  const folderId = ctx.params.id
+  const folderId = ctx.params.id || null
   try {
-    const folderPromise = Folder
+    let folderPromise
+    if (ctx.params.id) {
+      folderPromise = Folder
       .findOne({_id: ctx.params.id})
+    } else {
+      folderPromise = Promise.resolve({
+        name: 'root'
+      })
+    }
 
     const childFoldersPromise = Folder
       .find({parent: folderId})
@@ -48,9 +55,7 @@ async function getFolder (ctx, next) {
       .find({folder: folderId})
       .select(FILE_SCREEN)
 
-    let folder, childFolders, files
-
-    [folder, childFolders, files] =
+    let [folder, childFolders, files] =
       await Promise.all([folderPromise, childFoldersPromise, filesPromise])
 
     if (folder === null) {

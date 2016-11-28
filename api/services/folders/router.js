@@ -1,9 +1,18 @@
-// const KoaRouter = require('koa-router')
-// const invitationsRouter = new KoaRouter()
-// const userMiddleware = require('./middleware')
+const KoaRouter = require('koa-router')
+const foldersRouter = new KoaRouter()
+const {
+  getFolder,
+  createFolder
+} = require('./middleware')
 
-// invitationsRouter.get('/', userMiddleware.isAdmin, userMiddleware.getUsers) // needs admin
-// invitationsRouter
+const {
+  isAdmin
+} = require('../../middleware/authorization')
 
-// module.exports = invitationsRouter
+// If !id, then return root folders with root files
+foldersRouter.get('/:id?', isAdmin, getFolder)
+
+foldersRouter.post('/', isAdmin, createFolder)
+
+module.exports = foldersRouter
 

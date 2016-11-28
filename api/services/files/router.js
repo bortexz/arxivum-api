@@ -3,7 +3,6 @@ const filesRouter = new KoaRouter()
 const { isAdmin } = require('../../middleware/authorization')
 const {
   getFile,
-  getFiles,
   deleteFile,
   // Upload functions
   loadFiles,
@@ -14,7 +13,6 @@ const {
 } = require('./middleware')
 
 filesRouter.get('/:id', getFile)
-filesRouter.get('/', getFiles)
 filesRouter.del('/:id', deleteFile)
 
 filesRouter.post('/',

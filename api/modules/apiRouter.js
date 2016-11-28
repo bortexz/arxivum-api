@@ -5,6 +5,7 @@ const apiRouter = new KoaRouter({
 })
 
 const isAuthenticated = require('../middleware/authentication').isAuthenticated
+
 /* SERVICES */
 // users
 const usersRouter = require('../services/users/router')
@@ -21,6 +22,15 @@ apiRouter.use(
   isAuthenticated,
   filesRouter.routes(),
   filesRouter.allowedMethods()
+)
+
+// folders
+const foldersRouter = require('../services/folders/router')
+apiRouter.use(
+  '/folders',
+  isAuthenticated,
+  foldersRouter.routes(),
+  foldersRouter.allowedMethods()
 )
 // invitations
 
