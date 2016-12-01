@@ -91,7 +91,9 @@ async function createFolder (ctx, next) {
     if (e.code === 11000) {
       ctx.throw(400, 'This user already exists')
     }
-    log.error(e)
+    if (e.name === 'ValidationError') {
+      ctx.throw(400, 'Incorrect data')
+    }
     throw new Error()
   }
 }
