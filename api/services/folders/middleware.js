@@ -4,7 +4,6 @@ const { FILE_SCREEN } = require('../files/middleware')
 const log = require('../../modules/logger')('arxivum:api:folders')
 
 module.exports = {
-  getFolders,
   getFolder,
   createFolder,
   updateFolder,
@@ -12,21 +11,6 @@ module.exports = {
 }
 
 const FOLDER_LIST_SCREEN = 'name description'
-
-/**
- * Return the list of folders that don't have any parent.
- */
-async function getFolders (ctx, next) {
-  try {
-    const folders = await Folder
-      .find({parent: null})
-      .select(FOLDER_LIST_SCREEN)
-    ctx.body = folders
-  } catch (e) {
-    log(e)
-    throw new Error()
-  }
-}
 
 /**
  * Returns a folder with all of it's files and folder childs.
@@ -38,9 +22,9 @@ async function getFolder (ctx, next) {
   const folderId = ctx.params.id || null
   try {
     let folderPromise
-    if (ctx.params.id) {
+    if (folderId) {
       folderPromise = Folder
-      .findOne({_id: ctx.params.id})
+      .findOne({_id: folderId})
     } else {
       folderPromise = Promise.resolve({
         name: 'root'
@@ -62,6 +46,7 @@ async function getFolder (ctx, next) {
       throw new Error('FolderNotFound')
     }
 
+    folder = folder.toJSON ? folder.toJSON() : folder // If mongoose obj, json()
     folder.childFolders = childFolders
     folder.files = files
 

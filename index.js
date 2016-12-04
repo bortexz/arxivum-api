@@ -26,6 +26,8 @@ const server = http.createServer((req, res) => {
   }
 }).listen(2000)
 
+console.log('server listening on port 2000')
+
 server.on('upgrade', function (req, socket, head) {
   const resource = req.url.split('/')[1]
   if (resource === 'tracker') {

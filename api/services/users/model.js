@@ -19,11 +19,20 @@ const userSchema = new Schema({
     default: false
   },
   created_at: Date,
-  updated_at: Date
+  updated_at: Date,
+  folders_access: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Folder'
+  }],
+  files_access: [{
+    type: Schema.Types.ObjectId,
+    ref: 'File'
+  }]
 })
 
 userSchema.pre('save', updatePasswordIfDifferent)
 userSchema.pre('save', updateUpdated)
+userSchema.pre('save', checkFolderTreeConsistency)
 userSchema.methods.checkPassword = checkPassword
 
 const User = mongoose.model('User', userSchema)
@@ -66,4 +75,22 @@ function checkPassword (password) {
       resolve(isMatch)
     })
   })
+}
+
+/**
+ * To be implemented. Will remove child folders if a new parent folder
+ * has been added to have access
+ */
+function checkFolderTreeConsistency (next) {
+  if (!(this.isModified('files_access') || this.isModified('folders_access'))) {
+    return next()
+  }
+
+  // TODO : Implement
+  return next()
+
+  // Check consistency
+
+  // Need function in folders, that given a specific folder, returns it's path.
+  // Another to get the complete tree
 }

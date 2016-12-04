@@ -5,7 +5,8 @@ const {
   getUser,
   deleteUser,
   updateUser,
-  createUser
+  createUser,
+  grantAccess
 } = require('./middleware')
 
 const {
@@ -17,7 +18,9 @@ usersRouter.get('/', isAdmin, getUsers) // needs admin
 usersRouter.get('/:id', isSameUserOrAdmin, getUser) // needs admin or same user
 
 // Needs to have invitation type register for same email, and invite token?
-usersRouter.post('/', createUser)
+// For now, only isAdmin can create users
+usersRouter.post('/', isAdmin, createUser)
+usersRouter.post('/grant_access', isAdmin, grantAccess)
 usersRouter.del('/:id', isAdmin, deleteUser)
 usersRouter.put('/:id', isSameUserOrAdmin, updateUser)
 

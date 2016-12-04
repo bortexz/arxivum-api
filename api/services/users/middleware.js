@@ -8,7 +8,8 @@ module.exports = {
   getUser,
   getUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  grantAccess
 }
 
 // Screen to use when returning results
@@ -77,6 +78,36 @@ async function updateUser (ctx) {
   } catch (e) {
     log(e)
     throw new Error()
+  }
+}
+
+/**
+ * Function that grants access to one or more files or folders, to one or more
+ * users.
+ * ctx.body = {
+ *  users: [],
+ *  files: [],
+ *  folders: []
+ * }
+ */
+async function grantAccess (ctx) {
+  // First get users
+  const usersIds = ctx.body.users
+  const users = await User.find({_id: usersIds})
+
+  // Push files and folders to files_access and folders_access properties.
+  const newFilesAccess = ctx.body.files
+  const newFoldersAccess = ctx.body.folders
+  try {
+    for (let user of users) {
+      user.files_access.concat(newFilesAccess)
+      user.folders_access.concat(newFoldersAccess)
+      await user.save()
+    }
+    ctx.status = 200
+  } catch (e) {
+    log(e)
+    ctx.throw(500, new Error())
   }
 }
 
