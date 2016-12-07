@@ -4,3 +4,5 @@ npm-debug.log
 
 files/*
 !files/.gitkeep
+
+.vscode/

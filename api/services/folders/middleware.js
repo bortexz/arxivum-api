@@ -10,7 +10,7 @@ module.exports = {
   deleteFolder
 }
 
-const FOLDER_LIST_SCREEN = 'name description'
+const FOLDER_LIST_SCREEN = 'name description parent'
 
 /**
  * Returns a folder with all of it's files and folder childs.
@@ -25,6 +25,9 @@ async function getFolder (ctx, next) {
     if (folderId) {
       folderPromise = Folder
       .findOne({_id: folderId})
+      // .deepPopulate('parent')
+      .lean()
+      // .exec()
     } else {
       folderPromise = Promise.resolve({
         name: 'root'
@@ -46,7 +49,7 @@ async function getFolder (ctx, next) {
       throw new Error('FolderNotFound')
     }
 
-    folder = folder.toJSON ? folder.toJSON() : folder // If mongoose obj, json()
+    // folder = folder.toJSON ? folder.toJSON() : folder // If mongoose obj, json()
     folder.childFolders = childFolders
     folder.files = files
 
