@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const deepPopulate = require('mongoose-deep-populate')(mongoose)
-
 const folderSchema = new Schema({
   name: {
     type: String,
@@ -16,18 +14,6 @@ const folderSchema = new Schema({
 })
 
 folderSchema.methods.getPath = getPath
-folderSchema.plugin(deepPopulate, {
-  populate: {
-    'parent': {
-      // select: 'name _id parent',
-      options: {
-        limit: 10
-      }
-    }
-  }
-})
-
-
 
 const Folder = mongoose.model('Folder', folderSchema)
 

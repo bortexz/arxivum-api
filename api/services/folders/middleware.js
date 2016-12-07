@@ -25,9 +25,7 @@ async function getFolder (ctx, next) {
     if (folderId) {
       folderPromise = Folder
       .findOne({_id: folderId})
-      // .deepPopulate('parent')
       .lean()
-      // .exec()
     } else {
       folderPromise = Promise.resolve({
         name: 'root'
