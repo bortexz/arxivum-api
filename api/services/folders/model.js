@@ -1,19 +1,17 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const tree = require('mongoose-path-tree')
 
 const folderSchema = new Schema({
   name: {
     type: String,
     required: true
   },
-  description: String,
-  parent: {
-    type: Schema.Types.ObjectId,
-    ref: 'Folder'
-  }
+  description: String
 })
 
 folderSchema.methods.getPath = getPath
+folderSchema.plugin(tree)
 
 const Folder = mongoose.model('Folder', folderSchema)
 

@@ -136,9 +136,9 @@ async-each@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
 
-async@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.1.2.tgz#612a4ab45ef42a70cde806bad86ee6db047e8385"
+async@2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.1.4.tgz#2d2160c7788032e4dd6cbe2502f1f9a2c8f6cde4"
   dependencies:
     lodash "^4.14.0"
 
@@ -248,6 +248,10 @@ bluebird@2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
 
+bluebird@^3.1.1:
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+
 bn.js@^4.4.0:
   version "4.11.6"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
@@ -273,13 +277,7 @@ braces@^1.8.2:
     preserve "^0.2.0"
     repeat-element "^1.1.2"
 
-bson@~0.2:
-  version "0.2.22"
-  resolved "https://registry.yarnpkg.com/bson/-/bson-0.2.22.tgz#fcda103f26d0c074d5a52d50927db80fd02b4b39"
-  dependencies:
-    nan "~1.8"
-
-bson@~0.5.4, bson@~0.5.6:
+bson@~0.5.4, bson@~0.5.7:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/bson/-/bson-0.5.7.tgz#0d11fe0936c1fee029e11f7063f5d0ab2422ea3e"
 
@@ -1101,10 +1099,6 @@ hooks-fixed@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hooks-fixed/-/hooks-fixed-1.2.0.tgz#0d2772d4d7d685ff9244724a9f0b5b2559aac96b"
 
-hooks@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/hooks/-/hooks-0.2.1.tgz#0f591b1b344bdcb3df59773f62fbbaf85bf4028b"
-
 http-assert@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/http-assert/-/http-assert-1.2.0.tgz#d6392e6f6519def4e340266b35096db6d3feba00"
@@ -1462,12 +1456,6 @@ kareem@1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.1.3.tgz#0877610d8879c38da62d1dbafde4e17f2692f041"
 
-kerberos@0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/kerberos/-/kerberos-0.0.11.tgz#cb29891c21c22ac195f3140b97dd12204fea7dc2"
-  dependencies:
-    nan "~1.8"
-
 keygrip@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/keygrip/-/keygrip-1.0.1.tgz#b02fa4816eef21a8c4b35ca9e52921ffc89a30e9"
@@ -1737,96 +1725,52 @@ moment@2.x.x:
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.0.tgz#a4c292e02aac5ddefb29a6eed24f51938dd3b74f"
 
-mongodb-core@2.0.13:
-  version "2.0.13"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.0.13.tgz#f9394b588dce0e579482e53d74dbc7d7a9d4519c"
+mongodb-core@2.0.14:
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.0.14.tgz#4e8743b87343d169a7622535edbd47dcacd790be"
   dependencies:
-    bson "~0.5.6"
+    bson "~0.5.7"
     require_optional "~1.0.0"
 
-mongodb@1.4.38:
-  version "1.4.38"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-1.4.38.tgz#8cffd618100af3a4648a995498bfcfcb4ed8abd2"
-  dependencies:
-    bson "~0.2"
-  optionalDependencies:
-    kerberos "0.0.11"
-    readable-stream latest
-
-mongodb@2.2.11:
-  version "2.2.11"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.11.tgz#a828b036fe6a437a35e723af5f81781c4976306c"
+mongodb@2.2.12:
+  version "2.2.12"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.12.tgz#2a86f10228f911e9d6fefdbd7d922188d7b730f9"
   dependencies:
     es6-promise "3.2.1"
-    mongodb-core "2.0.13"
+    mongodb-core "2.0.14"
     readable-stream "2.1.5"
 
-mongoose-deep-populate@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/mongoose-deep-populate/-/mongoose-deep-populate-3.0.0.tgz#8100d0698b2211c646a6e92441a666d444171fa0"
-
-mongoose-path-tree@^1.3.5:
+"mongoose-path-tree@https://github.com/bertofer/mongoose-path-tree":
   version "1.3.5"
-  resolved "https://registry.yarnpkg.com/mongoose-path-tree/-/mongoose-path-tree-1.3.5.tgz#ba0c42b39f7f57fc8a4a3f598e3e1b6c43a373de"
+  resolved "https://github.com/bertofer/mongoose-path-tree#7418785697e65f2ce1f86f3d10cb8263f6fa171d"
   dependencies:
-    mongoose "3.8.x"
-    stream-worker "0.x.x"
+    mongoose "^4.7.2"
+    stream-worker "^2.0.1"
 
-mongoose@3.8.x:
-  version "3.8.40"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-3.8.40.tgz#032f5ba55582497559a87c1f3f4b3959c26406a7"
+mongoose@^4.7.2:
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.7.2.tgz#e8ed06353c918169bec886cdc0c2077a93682faa"
   dependencies:
-    hooks "0.2.1"
-    mongodb "1.4.38"
-    mpath "0.1.1"
-    mpromise "0.4.3"
-    mquery "1.10.0"
-    ms "0.1.0"
-    muri "1.1.0"
-    regexp-clone "0.0.1"
-    sliced "0.0.5"
-
-mongoose@^4.6.6:
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.7.0.tgz#adb7c6b73dfb76f204a70ba6cd364f887dcc2012"
-  dependencies:
-    async "2.1.2"
+    async "2.1.4"
     bson "~0.5.4"
     hooks-fixed "1.2.0"
     kareem "1.1.3"
-    mongodb "2.2.11"
+    mongodb "2.2.12"
     mpath "0.2.1"
     mpromise "0.5.5"
     mquery "2.0.0"
-    ms "0.7.1"
+    ms "0.7.2"
     muri "1.1.1"
     regexp-clone "0.0.1"
     sliced "1.0.1"
-
-mpath@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.1.1.tgz#23da852b7c232ee097f4759d29c0ee9cd22d5e46"
 
 mpath@0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.2.1.tgz#3a4e829359801de96309c27a6b2e102e89f9e96e"
 
-mpromise@0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/mpromise/-/mpromise-0.4.3.tgz#edc47a75a2a177b0e9382735db52dbec3808cc33"
-
 mpromise@0.5.5:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/mpromise/-/mpromise-0.5.5.tgz#f5b24259d763acc2257b0a0c8c6d866fd51732e6"
-
-mquery@1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/mquery/-/mquery-1.10.0.tgz#8603f02b0b524d17ac0539a85996124ee17b7cb3"
-  dependencies:
-    bluebird "2.10.2"
-    debug "2.2.0"
-    regexp-clone "0.0.1"
-    sliced "0.0.5"
 
 mquery@2.0.0:
   version "2.0.0"
@@ -1836,10 +1780,6 @@ mquery@2.0.0:
     debug "2.2.0"
     regexp-clone "0.0.1"
     sliced "0.0.5"
-
-ms@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-0.1.0.tgz#f21fac490daf1d7667fd180fe9077389cc9442b2"
 
 ms@0.7.1:
   version "0.7.1"
@@ -1855,10 +1795,6 @@ multistream@^2.0.2:
   dependencies:
     inherits "^2.0.1"
     readable-stream "^2.0.5"
-
-muri@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/muri/-/muri-1.1.0.tgz#a3a6d74e68a880f433a249a74969cbb665cc0add"
 
 muri@1.1.1:
   version "1.1.1"
@@ -1879,10 +1815,6 @@ mz@^2.3.1:
 nan@2.3.5, nan@^2.3.0:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.3.5.tgz#822a0dc266290ce4cd3a12282ca3e7e364668a08"
-
-nan@~1.8:
-  version "1.8.4"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-1.8.4.tgz#3c76b5382eab33e44b758d2813ca9d92e9342f34"
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -2207,7 +2139,7 @@ readable-stream@2.1.5, readable-stream@~2.1.4:
     string_decoder "~0.10.x"
     util-deprecate "~1.0.1"
 
-readable-stream@^2.0.0, "readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.5, readable-stream@latest:
+readable-stream@^2.0.0, "readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.5:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.2.tgz#a9e6fec3c7dda85f8bb1b3ba7028604556fc825e"
   dependencies:
@@ -2547,9 +2479,11 @@ stream-shift@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/stream-shift/-/stream-shift-1.0.0.tgz#d5c752825e5367e786f78e18e445ea223a155952"
 
-stream-worker@0.x.x:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/stream-worker/-/stream-worker-0.0.1.tgz#004dc8d8994bca41b0b0a6131784caa6db243f01"
+stream-worker@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/stream-worker/-/stream-worker-2.0.1.tgz#3c2c495f1682472ca313290dbfd11ff69f862c2a"
+  dependencies:
+    bluebird "^3.1.1"
 
 streamsearch@0.1.2:
   version "0.1.2"
