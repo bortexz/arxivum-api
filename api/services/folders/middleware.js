@@ -10,7 +10,7 @@ module.exports = {
   deleteFolder
 }
 
-const FOLDER_LIST_SCREEN = 'name description parent'
+const FOLDER_LIST_SCREEN = 'name description parent path'
 
 /**
  * Returns a folder with all of it's files and folder childs.
@@ -25,7 +25,7 @@ async function getFolder (ctx, next) {
     if (folderId) {
       folderPromise = Folder
       .findOne({_id: folderId})
-      .lean()
+      .select(FOLDER_LIST_SCREEN)
     } else {
       folderPromise = Promise.resolve({
         name: 'root'
@@ -47,9 +47,16 @@ async function getFolder (ctx, next) {
       throw new Error('FolderNotFound')
     }
 
-    // folder = folder.toJSON ? folder.toJSON() : folder // If mongoose obj, json()
+    let ancestors = []
+    if (folder.getAncestors) {
+      ancestors = await folder.getAncestors({}, '_id name').exec()
+      console.log(ancestors)
+      folder = folder.toJSON() // It's not root
+    }
+
     folder.childFolders = childFolders
     folder.files = files
+    folder.ancestors = ancestors
 
     ctx.body = folder
   } catch (e) {
@@ -71,8 +78,7 @@ async function createFolder (ctx, next) {
   const body = ctx.request.body
   const newFolder = new Folder(body)
   try {
-    const folderSaved = await newFolder.save()
-    ctx.body = folderSaved
+    ctx.body = await newFolder.save()
   } catch (e) {
     if (e.code === 11000) {
       ctx.throw(400, 'This user already exists')
