@@ -8,7 +8,9 @@ const app = new Koa()
 require('./modules/database')
 
 // TODO: Remove by default, allow by options.
-app.use(cors())
+app.use(cors({
+  credentials: true
+}))
 
 // Global middlewares
 const logger = require('./middleware/requestLogger')
