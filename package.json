@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=arxivum:* node --harmony-async-await .",
-    "start-watch": "DEBUG=arxivum:* nodemon --watch . --exec 'npm run start'"
+    "start": "node --harmony-async-await .",
+    "start-dev": "DEBUG=arxivum:* node --harmony-async-await --debug=5858 .",
+    "start-watch": "DEBUG=arxivum:* nodemon --watch . --exec 'npm run start-dev'"
   },
   "author": "Alberto Fernandez (Bertofer)",
   "license": "MIT",
