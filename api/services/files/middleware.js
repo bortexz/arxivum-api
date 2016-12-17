@@ -173,6 +173,7 @@ async function saveModels (ctx, next) {
       name: file.filename,
       size: file.bytesRead,
       torrent: file.torrent,
+      folder: ctx.query['folder'],
       // description: , TODO : Add description and send it over the upload
       encryption_key: file.encryption_key,
       encrypted_name: file.encrypted_name
