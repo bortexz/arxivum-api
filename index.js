@@ -1,6 +1,6 @@
 const httpProxy = require('http-proxy')
 const http = require('http')
-
+const debug = require('debug')('arxivum:proxy')
 // Import the different servers
 require('./api')
 require('./tracker')
@@ -25,11 +25,11 @@ const server = http.createServer((req, res) => {
   }
 }).listen(2000)
 
-console.log('server listening on port 2000')
-
 server.on('upgrade', function (req, socket, head) {
   const resource = req.url.split('/')[1]
   if (resource === 'tracker') {
     trackerProxy.ws(req, socket, head)
   }
 })
+
+debug('server listening on port 2000')
