@@ -11,13 +11,7 @@ const app = new Koa()
 
 app.use(cors()) // TODO : Optional | Dependent of dev/prod
 
-koaRouter.get('/webseed/:file',
-async (ctx, next) => {
-  console.log('entra aqui almenos?')
-  next()
-},
-range,
-async (ctx, next) => {
+koaRouter.get('/webseed/:file', range, async (ctx, next) => {
   ctx.body = fs.createReadStream(path.join('./files', ctx.params.file))
 })
 
