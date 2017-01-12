@@ -10,7 +10,7 @@ module.exports = {
   deleteFolder
 }
 
-const FOLDER_LIST_SCREEN = 'name description parent path'
+const FOLDER_LIST_SCREEN = 'name parent path'
 
 /**
  * Returns a folder with all of it's files and folder childs.
