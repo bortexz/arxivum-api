@@ -54,7 +54,7 @@ async function getFolder (ctx, next) {
       folder = folder.toJSON() // It's not root
     }
 
-    folder.childFolders = childFolders
+    folder.folders = childFolders
     folder.files = files
     folder.ancestors = ancestors
 
