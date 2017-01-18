@@ -1,7 +1,7 @@
 const debug = require('debug')('arxivum:webseed')
 const Koa = require('koa')
 // const range = require('koa-range')
-const range = require('../../../contributions/koa-range')
+const range = require('koa-range')
 const koaRouter = require('koa-router')()
 const cors = require('koa-cors')
 const fs = require('fs')
