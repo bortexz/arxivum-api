@@ -2,32 +2,43 @@
  * Module to send emails
  */
 const nodemailer = require('nodemailer')
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'gmail.user@gmail.com',
-    pass: 'yourpass'
-  }
-})
+const config = require('../config')
+const debug = require('arxivum:api:emailer')
 
 module.exports = {
   sendInvitationRegisterEmail
 }
 
-async function sendInvitationRegisterEmail (email) {
+const transporter = nodemailer.createTransport({
+  service: config.EMAILER_SMTP_SERVICE,
+  auth: {
+    user: config.EMAILER_AUTH_USER,
+    pass: config.EMAILER_AUTH_PASSWORD
+  }
+})
+
+/**
+ * opts has the following properties:
+ * - email: Who to send the email
+ * - name: the name that will be displayed as the sender
+ * - token: the token to use in the url
+ * - url: the url where to access the app
+ */
+async function sendInvitationRegisterEmail (opts) {
   let mailOptions = {
-    from: '"Fred Foo 👻" <foo@blurdybloop.com>', // sender address
-    to: 'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: 'Hello world ?', // plain text body
-    html: '<b>Hello world ?</b>' // html body
+    from: config.EMAILER_PUBLIC_EMAIL, // sender address
+    to: opts.email, // list of receivers
+    subject: `${opts.name} has invited you to it's Arxivum!`, // Subject line
+    html: `${opts.url} + ${opts.token}` // html body
   }
 
+  if (global.ENV === 'dev') {
+    return debug('Development mode -> Email not sent')
+  }
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return console.log(error)
+      return debug('Error sending email', error)
     }
-    console.log('Message %s sent: %s', info.messageId, info.response)
+    debug('Message %s sent: %s', info.messageId, info.response)
   })
 }

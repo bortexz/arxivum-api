@@ -1,4 +1,6 @@
 const Invitation = require('./model')
+const emailer = require('../../modules/emailer')
+const config = require('../../config')
 
 module.exports = {
   createInvitation,
@@ -12,6 +14,14 @@ async function createInvitation (ctx, next) {
   try {
     const savedInvitation = await newInvitation.save()
     ctx.body = savedInvitation
+
+    // sends email
+    emailer.sendInvitationRegisterEmail({
+      email: savedInvitation.email,
+      token: savedInvitation.token,
+      name: 'Someone', // read from user?
+      url: config.PUBLIC_URL
+    })
   } catch (e) {
     if (e.code === 11000) {
       ctx.throw(400, 'This invitation email already exists')
@@ -25,7 +35,7 @@ async function createInvitation (ctx, next) {
 
 async function getInvitationByToken (ctx, next) {
   const token = ctx.request.query.token
-  const invitation = await Invitation.find({ token })
+  const invitation = await Invitation.find({ token, fulfilled: false })
   try {
     if (!invitation) throw new Error('Not found')
   } catch (e) {
@@ -34,6 +44,10 @@ async function getInvitationByToken (ctx, next) {
 }
 
 async function getAllInvitations (ctx, next) {
-  const invitations = await Invitation.find()
-  ctx.body = invitations
+  try {
+    const invitations = await Invitation.find()
+    ctx.body = invitations
+  } catch (err) {
+    ctx.throw(500, 'Error occurred while accessing database')
+  }
 }

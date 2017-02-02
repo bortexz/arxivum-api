@@ -16,10 +16,14 @@ const fileSchema = new Schema({
   fulfilled: {
     type: Boolean,
     default: false
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
   }
 })
 
-const File = mongoose.model('File', fileSchema)
+const Invitation = mongoose.model('Invitation', fileSchema)
 
-module.exports = File
+module.exports = Invitation
 

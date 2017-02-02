@@ -4,6 +4,9 @@ const log = require('./modules/logger')('arxivum:api')
 
 const app = new Koa()
 
+// Environment
+global.ENV = process.env.NODE_ENV || 'dev'
+
 // Init database
 require('./modules/database')
 

@@ -1,1 +1,1 @@
-module.exports = require(`./${process.env.NODE_ENV || 'dev'}.config.js`)
+module.exports = require(`./${global.ENV}.config.js`)
