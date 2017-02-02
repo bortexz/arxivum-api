@@ -12,9 +12,6 @@ async function createInvitation (ctx, next) {
   try {
     const savedInvitation = await newInvitation.save()
     ctx.body = savedInvitation
-
-    // Send email !
-
   } catch (e) {
     if (e.code === 11000) {
       ctx.throw(400, 'This invitation email already exists')
@@ -34,9 +31,9 @@ async function getInvitationByToken (ctx, next) {
   } catch (e) {
     if (e.name === 'Not found') ctx.throw(404, 'Not found')
   }
-
 }
 
 async function getAllInvitations (ctx, next) {
-  // With email and token, NOT fulfilled
+  const invitations = await Invitation.find()
+  ctx.body = invitations
 }
