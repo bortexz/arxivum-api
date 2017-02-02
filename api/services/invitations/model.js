@@ -5,29 +5,17 @@ const uuid = require('uuid')
 const fileSchema = new Schema({
   email: {
     type: String,
-    required: true
-  },
-  type: {
-    type: String,
-    enum: ['file-access', 'folder-access', 'register'],
-    required: true
+    required: true,
+    unique: true
   },
   token: {
     type: String,
-    default: uuid
+    default: uuid,
+    unique: true
   },
-  allow_register: {
+  fulfilled: {
     type: Boolean,
-    required: true,
     default: false
-  },
-  files: {
-    type: Schema.types.ObjectId,
-    ref: 'File'
-  },
-  folders: {
-    type: Schema.types.ObjectId,
-    ref: 'Folder'
   }
 })
 

@@ -6,4 +6,3 @@ invitationsRouter.get('/', userMiddleware.isAdmin, userMiddleware.getUsers) // n
 invitationsRouter
 
 module.exports = invitationsRouter
-
