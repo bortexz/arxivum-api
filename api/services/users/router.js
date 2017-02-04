@@ -20,7 +20,6 @@ usersRouter.get('/:id', isSameUserOrAdmin, getUser) // needs admin or same user
 // Needs to have invitation type register for same email, and invite token?
 // For now, only isAdmin can create users
 usersRouter.post('/', isAdmin, createUser)
-usersRouter.post('/grant_access', isAdmin, grantAccess)
 usersRouter.del('/:id', isAdmin, deleteUser)
 usersRouter.put('/:id', isSameUserOrAdmin, updateUser)
 

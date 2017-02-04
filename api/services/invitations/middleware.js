@@ -51,3 +51,8 @@ async function getAllInvitations (ctx, next) {
     ctx.throw(500, 'Error occurred while accessing database')
   }
 }
+
+async function hasInvitation (ctx, next) {
+  let email = ctx.body.email
+  let token = ctx.body.token
+}

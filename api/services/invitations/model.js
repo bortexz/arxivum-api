@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const uuid = require('uuid')
 
-const fileSchema = new Schema({
+const invitationSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -23,7 +23,7 @@ const fileSchema = new Schema({
   }
 })
 
-const Invitation = mongoose.model('Invitation', fileSchema)
+const Invitation = mongoose.model('Invitation', invitationSchema)
 
 module.exports = Invitation
 

@@ -33,7 +33,7 @@ async function sendInvitationRegisterEmail (opts) {
   }
 
   if (global.ENV === 'dev') {
-    return debug('Development mode -> Email not sent')
+    return debug('Development mode -> Email not sent', mailOptions)
   }
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {

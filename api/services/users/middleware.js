@@ -1,6 +1,7 @@
 const User = require('./model')
 const log = require('../../modules/logger')('arxivum:users:middleware')
 const pick = require('lodash.pick')
+const Invitation = require('../invitations/model')
 
 module.exports = {
   // Main endpoint functions
@@ -8,8 +9,7 @@ module.exports = {
   getUser,
   getUsers,
   updateUser,
-  deleteUser,
-  grantAccess
+  deleteUser
 }
 
 // Screen to use when returning results
@@ -17,10 +17,19 @@ const USER_SCREEN = '_id name email created_at updated_at admin'
 
 async function createUser (ctx) {
   const body = ctx.request.body
-  if (body.admin) delete ctx.body.admin
-  const newUser = new User(body)
+  if (body.admin) delete body.admin
+
+  let {name, email, token, password} = ctx.body
+  // check it has auth
+  let invitation = await Invitation.findOne({ email, token, fulfilled: false })
+
+  if (!invitation) return ctx.throw(401, 'You dont have an invitation to join')
+
+  const newUser = new User({name, email, password})
   try {
     const userSaved = await newUser.save()
+    invitation.fulfilled = true
+    await invitation.save()
     ctx.body = pick(userSaved, USER_SCREEN.split(' '))
   } catch (e) {
     if (e.code === 11000) {
@@ -78,36 +87,6 @@ async function updateUser (ctx) {
   } catch (e) {
     log(e)
     throw new Error()
-  }
-}
-
-/**
- * Function that grants access to one or more files or folders, to one or more
- * users.
- * ctx.body = {
- *  users: [],
- *  files: [],
- *  folders: []
- * }
- */
-async function grantAccess (ctx) {
-  // First get users
-  const usersIds = ctx.body.users
-  const users = await User.find({_id: usersIds})
-
-  // Push files and folders to files_access and folders_access properties.
-  const newFilesAccess = ctx.body.files
-  const newFoldersAccess = ctx.body.folders
-  try {
-    for (let user of users) {
-      user.files_access.concat(newFilesAccess)
-      user.folders_access.concat(newFoldersAccess)
-      await user.save()
-    }
-    ctx.status = 200
-  } catch (e) {
-    log(e)
-    ctx.throw(500, new Error())
   }
 }
 
