@@ -11,7 +11,6 @@ const isAuthenticated = require('../middleware/authentication').isAuthenticated
 const usersRouter = require('../services/users/router')
 apiRouter.use(
   '/users',
-  isAuthenticated,
   usersRouter.routes(),
   usersRouter.allowedMethods()
 )

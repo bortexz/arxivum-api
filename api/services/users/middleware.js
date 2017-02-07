@@ -5,7 +5,7 @@ const Invitation = require('../invitations/model')
 
 module.exports = {
   // Main endpoint functions
-  createUser,
+  createUserFactory,
   getUser,
   getUsers,
   updateUser,
@@ -15,28 +15,37 @@ module.exports = {
 // Screen to use when returning results
 const USER_SCREEN = '_id name email created_at updated_at admin'
 
-async function createUser (ctx) {
-  const body = ctx.request.body
-  if (body.admin) delete body.admin
+function createUserFactory (isRegister) {
+  return async function (ctx) {
+    const body = ctx.request.body
+    if (body.admin) delete body.admin
 
-  let {name, email, token, password} = ctx.body
-  // check it has auth
-  let invitation = await Invitation.findOne({ email, token, fulfilled: false })
+    let {name, email, token, password} = ctx.body
+    // check it has auth
 
-  if (!invitation) return ctx.throw(401, 'You dont have an invitation to join')
-
-  const newUser = new User({name, email, password})
-  try {
-    const userSaved = await newUser.save()
-    invitation.fulfilled = true
-    await invitation.save()
-    ctx.body = pick(userSaved, USER_SCREEN.split(' '))
-  } catch (e) {
-    if (e.code === 11000) {
-      ctx.throw(400, 'This user already exists')
+    let invitation
+    if (isRegister) {
+      invitation = await Invitation.findOne({ email, token, fulfilled: false })
+      if (!invitation) return ctx.throw(401, 'You dont have an invitation to join')
     }
-    log.error(e)
-    throw new Error()
+
+    const newUser = new User({name, email, password})
+    try {
+      const userSaved = await newUser.save()
+      if (isRegister) {
+        invitation.fulfilled = true
+        await invitation.save()
+      }
+      ctx.body = pick(userSaved, USER_SCREEN.split(' '))
+
+      // Send registration email ?
+    } catch (e) {
+      if (e.code === 11000) {
+        ctx.throw(400, 'This user already exists')
+      }
+      log.error(e)
+      throw new Error()
+    }
   }
 }
 
