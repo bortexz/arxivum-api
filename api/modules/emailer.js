@@ -3,7 +3,7 @@
  */
 const nodemailer = require('nodemailer')
 const config = require('../config')
-const debug = require('arxivum:api:emailer')
+const debug = require('debug')('arxivum:api:emailer')
 
 module.exports = {
   sendInvitationRegisterEmail

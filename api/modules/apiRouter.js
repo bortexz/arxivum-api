@@ -41,4 +41,12 @@ apiRouter.use(
   authenticateRouter.allowedMethods()
 )
 
+// invitations
+const invitationsRouter = require('../services/invitations/router')
+apiRouter.use(
+  '/invitations',
+  invitationsRouter.routes(),
+  invitationsRouter.allowedMethods()
+)
+
 module.exports = apiRouter

@@ -1830,6 +1830,10 @@ node-pre-gyp@^0.6.29:
     tar "~2.2.1"
     tar-pack "~3.3.0"
 
+nodemailer@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-3.0.2.tgz#6f5ffc608590b1980a9c24820597e60ef8182305"
+
 nodemon@^1.11.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.11.0.tgz#226c562bd2a7b13d3d7518b49ad4828a3623d06c"

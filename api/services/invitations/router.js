@@ -2,15 +2,19 @@ const KoaRouter = require('koa-router')
 const invitationsRouter = new KoaRouter()
 const {
   getAllInvitations,
-  createInvitation,
-  getInvitationByToken
+  createInvitation
+  // getInvitationByToken
 } = require('./middleware')
 const {
   isAdmin
+} = require('../../middleware/authorization')
+
+const {
+  isAuthenticated
 } = require('../../middleware/authentication')
 
-invitationsRouter.get('/', isAdmin, getAllInvitations) // needs admin
-invitationsRouter.post('/', isAdmin, createInvitation)
-invitationsRouter.get('/with-token/', getInvitationByToken)
+invitationsRouter.get('/', isAuthenticated, isAdmin, getAllInvitations)
+invitationsRouter.post('/', isAuthenticated, isAdmin, createInvitation)
+// invitationsRouter.get('/with-token/', getInvitationByToken)
 
 module.exports = invitationsRouter

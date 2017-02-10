@@ -17,7 +17,7 @@ const {
   isAuthenticated
 } = require('../../middleware/authentication.js')
 
-usersRouter.get('/', isAdmin, getUsers)
+usersRouter.get('/', isAuthenticated, isAdmin, getUsers)
 usersRouter.get('/:id', isSameUserOrAdmin, getUser)
 
 usersRouter.post('/register', createUserFactory(true))

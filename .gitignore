@@ -6,3 +6,5 @@ files/*
 !files/.gitkeep
 
 .vscode/
+
+npm-debug.log*

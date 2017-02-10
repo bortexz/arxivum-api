@@ -52,7 +52,7 @@ async function getAllInvitations (ctx, next) {
   }
 }
 
-async function hasInvitation (ctx, next) {
-  let email = ctx.body.email
-  let token = ctx.body.token
-}
+// async function hasInvitation (ctx, next) {
+//   let email = ctx.body.email
+//   let token = ctx.body.token
+// }
