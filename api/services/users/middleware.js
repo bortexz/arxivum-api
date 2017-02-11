@@ -20,7 +20,7 @@ function createUserFactory (isRegister) {
     const body = ctx.request.body
     if (body.admin) delete body.admin
 
-    let {name, email, token, password} = ctx.body
+    let {name, email, token, password} = ctx.request.body
     // check it has auth
 
     let invitation

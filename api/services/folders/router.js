@@ -6,13 +6,13 @@ const {
 } = require('./middleware')
 
 const {
-  isAdmin
-} = require('../../middleware/authorization')
+  isAuthenticated
+} = require('../../middleware/authentication')
 
 // If !id, then return root folders with root files
-foldersRouter.get('/:id?', isAdmin, getFolder)
+foldersRouter.get('/:id?', isAuthenticated, getFolder)
 
-foldersRouter.post('/', isAdmin, createFolder)
+foldersRouter.post('/', isAuthenticated, createFolder)
 
 module.exports = foldersRouter
 

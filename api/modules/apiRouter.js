@@ -4,8 +4,6 @@ const apiRouter = new KoaRouter({
   prefix: '/api'
 })
 
-const isAuthenticated = require('../middleware/authentication').isAuthenticated
-
 /* SERVICES */
 // users
 const usersRouter = require('../services/users/router')
@@ -18,7 +16,6 @@ apiRouter.use(
 const filesRouter = require('../services/files/router')
 apiRouter.use(
   '/files',
-  isAuthenticated,
   filesRouter.routes(),
   filesRouter.allowedMethods()
 )
@@ -27,7 +24,6 @@ apiRouter.use(
 const foldersRouter = require('../services/folders/router')
 apiRouter.use(
   '/folders',
-  isAuthenticated,
   foldersRouter.routes(),
   foldersRouter.allowedMethods()
 )

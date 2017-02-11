@@ -1,6 +1,7 @@
 const Invitation = require('./model')
 const emailer = require('../../modules/emailer')
 const config = require('../../config')
+const debug = require('debug')('arxivum:api:invitations')
 
 module.exports = {
   createInvitation,
@@ -45,9 +46,12 @@ async function getInvitationByToken (ctx, next) {
 
 async function getAllInvitations (ctx, next) {
   try {
-    const invitations = await Invitation.find()
+    console.log(ctx.request.query)
+    const fulfilled = ctx.request.query.fulfilled || false
+    const invitations = await Invitation.find({ fulfilled })
     ctx.body = invitations
   } catch (err) {
+    debug(err)
     ctx.throw(500, 'Error occurred while accessing database')
   }
 }
