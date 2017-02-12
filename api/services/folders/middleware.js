@@ -95,7 +95,8 @@ async function createFolder (ctx, next) {
 /** helper for biuldTree */
 function buildBranch (root, folders) {
   // find childs
-  let childs = R.filter(child => child.parent && child.parent.equals(root._id), folders)
+  let childs = R.filter(child =>
+    child.parent && child.parent.equals(root._id), folders)
   if (childs.length === 0) return undefined
 
   return R.map(child => {
