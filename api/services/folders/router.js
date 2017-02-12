@@ -2,7 +2,8 @@ const KoaRouter = require('koa-router')
 const foldersRouter = new KoaRouter()
 const {
   getFolder,
-  createFolder
+  createFolder,
+  getTree
 } = require('./middleware')
 
 const {
@@ -10,7 +11,9 @@ const {
 } = require('../../middleware/authentication')
 
 // If !id, then return root folders with root files
+foldersRouter.get('/tree', isAuthenticated, getTree)
 foldersRouter.get('/:id?', isAuthenticated, getFolder)
+
 
 foldersRouter.post('/', isAuthenticated, createFolder)
 

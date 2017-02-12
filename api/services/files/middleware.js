@@ -7,13 +7,13 @@ const crypto = require('crypto')
 const log = require('../../modules/logger')('arxivum:files:middleware')
 const uuid = require('uuid')
 const {fsStreamPromise, createTorrentPromise} = require('./utils')
+const R = require('ramda')
 const {
   WEBSEED_FOLDER,
   PUBLIC_API_URL,
   PUBLIC_TRACKER_URL
 } = require('../../config')
 const urljoin = require('url-join')
-const pick = require('lodash.pick')
 
 const ENCRYPT_ALGO = 'aes-256-cbc'
 const FILE_SCREEN = '_id name size torrent description'
@@ -194,6 +194,6 @@ async function saveModels (ctx, next) {
  */
 async function completeUpdate (ctx, next) {
   ctx.body = ctx.files.map(
-    file => pick(file.model_saved, FILE_SCREEN.split(' '))
+    file => R.pick(FILE_SCREEN.split(' '), file.model_saved)
   )
 }

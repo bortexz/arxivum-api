@@ -1,6 +1,6 @@
 const User = require('./model')
 const log = require('../../modules/logger')('arxivum:users:middleware')
-const pick = require('lodash.pick')
+const R = require('ramda')
 const Invitation = require('../invitations/model')
 
 module.exports = {
@@ -36,7 +36,7 @@ function createUserFactory (isRegister) {
         invitation.fulfilled = true
         await invitation.save()
       }
-      ctx.body = pick(userSaved, USER_SCREEN.split(' '))
+      ctx.body = R.pick(USER_SCREEN.split(' '), userSaved)
 
       // Send registration email ?
     } catch (e) {
