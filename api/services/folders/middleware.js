@@ -109,7 +109,7 @@ function buildBranch (root, folders) {
  * Builds the tree of folders of the app
  */
 function buildTree (folders) {
-  folders = R.map(R.pick(['_id', 'name', 'parent']), roots)
+  folders = R.map(R.pick(['_id', 'name', 'parent']), folders)
   let roots = R.filter(folder => !folder.parent, folders)
 
   return R.map(root => {
