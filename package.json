@@ -30,6 +30,7 @@
     "mongoose-path-tree": "https://github.com/bertofer/mongoose-path-tree",
     "nodemailer": "^3.0.2",
     "ramda": "^0.23.0",
+    "stream-to-promise": "^2.2.0",
     "url-join": "^1.1.0",
     "uuid": "^3.0.0"
   },

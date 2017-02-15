@@ -6,7 +6,8 @@ const qcrypto = require('crypto-promise')
 const crypto = require('crypto')
 const log = require('../../modules/logger')('arxivum:files:middleware')
 const uuid = require('uuid')
-const {fsStreamPromise, createTorrentPromise} = require('./utils')
+const { createTorrentPromise } = require('./utils')
+const streamToPromise = require('stream-to-promise')
 const R = require('ramda')
 const {
   WEBSEED_FOLDER,
@@ -121,7 +122,7 @@ async function encryptAndStore (ctx, next) {
         .pipe(encryptCipher)
         .pipe(fs.createWriteStream(file.encrypted_file_path))
 
-      const writeFilePromise = fsStreamPromise(writeFileStream)
+      const writeFilePromise = streamToPromise(writeFileStream)
       writeFilePromises.push(writeFilePromise)
     } catch (e) {
       log('e', e)
