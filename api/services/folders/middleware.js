@@ -1,6 +1,6 @@
 const Folder = require('./model')
 const File = require('../files/model')
-const { FILE_SCREEN } = require('../files/middleware')
+const { FILE_LIST_SCREEN } = require('../files/middleware')
 const log = require('../../modules/logger')('arxivum:api:folders')
 const R = require('ramda')
 
@@ -40,7 +40,7 @@ async function getFolder (ctx, next) {
 
     const filesPromise = File
       .find({folder: folderId})
-      .select(FILE_SCREEN)
+      .select(FILE_LIST_SCREEN)
 
     let [folder, childFolders, files] =
       await Promise.all([folderPromise, childFoldersPromise, filesPromise])

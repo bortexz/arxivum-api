@@ -17,7 +17,8 @@ const {
 const urljoin = require('url-join')
 
 const ENCRYPT_ALGO = 'aes-256-cbc'
-const FILE_SCREEN = '_id name size torrent'
+const FILE_LIST_SCREEN = '_id name size torrent'
+const FILE_SCREEN = '_id name size torrent encryption_key'
 
 module.exports = {
   getFile,
@@ -29,7 +30,8 @@ module.exports = {
   saveModels,
   completeUpdate,
   // constants
-  FILE_SCREEN
+  FILE_SCREEN,
+  FILE_LIST_SCREEN
 }
 
 /**
