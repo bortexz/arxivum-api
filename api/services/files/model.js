@@ -14,7 +14,6 @@ const fileSchema = new Schema({
     type: Buffer,
     required: true
   },
-  description: String,
   folder: {
     type: Schema.Types.ObjectId,
     ref: 'Folder'
