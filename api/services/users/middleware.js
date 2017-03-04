@@ -1,7 +1,8 @@
 const User = require('./model')
 const log = require('../../modules/logger')('arxivum:users:middleware')
 const R = require('ramda')
-const Invitation = require('../invitations/model')
+const userCtrl = require('./controller')
+const invitationCtrl = require('../invitations/controller')
 
 module.exports = {
   // Main endpoint functions
@@ -17,28 +18,22 @@ const USER_SCREEN = '_id name email created_at updated_at admin'
 
 function createUserFactory (isRegister) {
   return async function (ctx) {
-    const body = ctx.request.body
-    if (body.admin) delete body.admin
-
-    let {name, email, token, password} = ctx.request.body
-    // check it has auth
-
+    let userData = ctx.request.body
     let invitation
-    if (isRegister) {
-      invitation = await Invitation.findOne({ email, token, fulfilled: false })
-      if (!invitation) return ctx.throw(401, 'You dont have an invitation to join')
-    }
-
-    const newUser = new User({name, email, password})
     try {
-      const userSaved = await newUser.save()
       if (isRegister) {
-        invitation.fulfilled = true
-        await invitation.save()
+        invitation = await invitationCtrl.getInvitation(userData.email, false)
+        if (!invitation) return ctx.throw(401, 'You dont have an invitation to join')
       }
-      ctx.body = R.pick(USER_SCREEN.split(' '), userSaved)
 
-      // Send registration email ?
+      const newUser = await userCtrl.createUser(userData)
+      if (isRegister) {
+        await invitationCtrl.fulfillInvitation(invitation._id)
+      }
+
+      ctx.body = R.pick(USER_SCREEN.split(' '), newUser)
+
+      // TODO: send invitation email
     } catch (e) {
       if (e.code === 11000) {
         ctx.throw(400, 'This user already exists')
@@ -51,9 +46,7 @@ function createUserFactory (isRegister) {
 
 async function getUser (ctx) {
   try {
-    const user = await User
-      .findOne({_id: ctx.params.id})
-      .select(USER_SCREEN)
+    const user = userCtrl.getUser(ctx.request.params.id, USER_SCREEN)
 
     if (user === null) {
       throw new Error('UserNotFound')
@@ -74,9 +67,7 @@ async function getUser (ctx) {
 
 async function getUsers (ctx) {
   try {
-    const users = await User
-      .find()
-      .select(USER_SCREEN)
+    const users = await userCtrl.getUsers(USER_SCREEN)
     ctx.body = users
   } catch (e) {
     log(e)
@@ -88,14 +79,12 @@ async function updateUser (ctx) {
   // Only name and password can be updated for now
   const {name, password} = ctx.request.body
   try {
-    const modifiedUser = await User
-      .findOneAndUpdate({_id: ctx.state.user.id},
-        {name, password},
-        {fields: USER_SCREEN, new: true})
+    const modifiedUser =
+      await userCtrl.updateUser(ctx.request.params.id, {name, password}, USER_SCREEN)
     ctx.body = modifiedUser
   } catch (e) {
     log(e)
-    throw new Error()
+    ctx.throw(500, new Error())
   }
 }
 
