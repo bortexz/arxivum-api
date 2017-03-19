@@ -1,8 +1,6 @@
-const Folder = require('./model')
-const File = require('../files/model')
-const { FILE_LIST_SCREEN } = require('../files/middleware')
+const foldersController = require('./controller')
+const filesController = require('../files/controller')
 const log = require('../../modules/logger')('arxivum:api:folders')
-const R = require('ramda')
 
 module.exports = {
   getFolder,
@@ -16,31 +14,13 @@ const FOLDER_LIST_SCREEN = 'name parent path'
 
 /**
  * Returns a folder with all of it's files and folder childs.
- * TODO : Ideally, don't need 3 DB calls for this.
- * Having many-many with links in both models overcomplicated for now
- * to maintain consistency.
  */
 async function getFolder (ctx, next) {
   const folderId = ctx.params.id || null
   try {
-    let folderPromise
-    if (folderId) {
-      folderPromise = Folder
-      .findOne({_id: folderId})
-      .select(FOLDER_LIST_SCREEN)
-    } else {
-      folderPromise = Promise.resolve({
-        name: 'root'
-      })
-    }
-
-    const childFoldersPromise = Folder
-      .find({parent: folderId})
-      .select(FOLDER_LIST_SCREEN)
-
-    const filesPromise = File
-      .find({folder: folderId})
-      .select(FILE_LIST_SCREEN)
+    const folderPromise = foldersController.getFolder(folderId, FOLDER_LIST_SCREEN)
+    const childFoldersPromise = foldersController.getChildrenFolders(folderId)
+    const filesPromise = filesController.getFiles(folderId)
 
     let [folder, childFolders, files] =
       await Promise.all([folderPromise, childFoldersPromise, filesPromise])
@@ -52,7 +32,6 @@ async function getFolder (ctx, next) {
     let ancestors = []
     if (folder.getAncestors) {
       ancestors = await folder.getAncestors({}, '_id name').exec()
-      console.log(ancestors)
       folder = folder.toJSON() // It's not root
     }
 
@@ -77,10 +56,8 @@ async function getFolder (ctx, next) {
  * Creates a new folder
  */
 async function createFolder (ctx, next) {
-  const body = ctx.request.body
-  const newFolder = new Folder(body)
   try {
-    ctx.body = await newFolder.save()
+    ctx.body = await foldersController.createFolder(ctx.request.body)
   } catch (e) {
     if (e.code === 11000) {
       ctx.throw(400, 'This user already exists')
@@ -92,37 +69,13 @@ async function createFolder (ctx, next) {
   }
 }
 
-/** helper for biuldTree */
-function buildBranch (root, folders) {
-  // find childs
-  let childs = R.filter(child =>
-    child.parent && child.parent.equals(root._id), folders)
-  if (childs.length === 0) return undefined
-
-  return R.map(child => {
-    child.children = buildBranch(child, folders)
-    return child
-  }, childs)
-}
-
-/**
- * Builds the tree of folders of the app
- */
-function buildTree (folders) {
-  folders = R.map(R.pick(['_id', 'name', 'parent']), folders)
-  let roots = R.filter(folder => !folder.parent, folders)
-
-  return R.map(root => {
-    root.children = buildBranch(root, folders)
-    return root
-  }, roots)
-}
-
 async function getTree (ctx, next) {
-  // get all folders
-  const folders = await Folder.find() // Get all of them
-  const tree = buildTree(folders)
-  ctx.body = tree
+  try {
+    ctx.body = await foldersController.getFolderTree()
+  } catch (e) {
+    log('Error retrieving folder tree', e)
+    ctx.throw(500, 'Error retrieving folder tree')
+  }
 }
 
 async function updateFolder (ctx, next) {
