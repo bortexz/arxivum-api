@@ -23,12 +23,12 @@ const FILE_SCREEN = '_id name size torrent encryption_key'
 module.exports = {
   getFile,
   deleteFile,
-  // Update specific
+  // Upload specific
   loadFiles,
   encryptAndStore,
   generateTorrents,
   saveModels,
-  completeUpdate,
+  completeUpload,
   // constants
   FILE_SCREEN,
   FILE_LIST_SCREEN
@@ -195,7 +195,7 @@ async function saveModels (ctx, next) {
 /**
  * Generates the body of the response
  */
-async function completeUpdate (ctx, next) {
+async function completeUpload (ctx, next) {
   ctx.body = ctx.files.map(
     file => R.pick(FILE_SCREEN.split(' '), file.model_saved)
   )

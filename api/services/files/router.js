@@ -10,7 +10,7 @@ const {
   encryptAndStore,
   generateTorrents,
   saveModels,
-  completeUpdate
+  completeUpload
 } = require('./middleware')
 
 filesRouter.get('/:id', getFile)
@@ -23,6 +23,6 @@ filesRouter.post('/',
   encryptAndStore,
   generateTorrents,
   saveModels,
-  completeUpdate)
+  completeUpload)
 
 module.exports = filesRouter
