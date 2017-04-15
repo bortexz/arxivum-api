@@ -10,18 +10,18 @@ module.exports = {
   deleteFolder
 }
 
-function getFolder (id, fields = 'name parent path') {
+async function getFolder (id, fields = 'name parent path') {
   return id
-    ? Folder.findOne({_id: id}).select(fields)
-    : Promise.resolve({ name: 'root' })
+    ? await Folder.findOne({_id: id}).select(fields)
+    : { name: 'root' }
 }
 
 /**
  * Returns the children folders of the given folder id.
  * @param {string} id of the parent
  */
-function getChildrenFolders (id) {
-  return Folder.find({ parent: id })
+async function getChildrenFolders (id) {
+  return await Folder.find({ parent: id })
 }
 
 /** helper for biuldTree */
@@ -50,16 +50,9 @@ const _buildTree = (folders) => {
   }, roots)
 }
 
-function getFolderTree () {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const folders = await Folder.find() // Get all of them
-      const tree = _buildTree(folders)
-      resolve(tree)
-    } catch (e) {
-      reject(e)
-    }
-  })
+async function getFolderTree () {
+  const folders = await Folder.find() // Get all of them
+  return _buildTree(folders)
 }
 
 async function createFolder (data) {
@@ -67,11 +60,10 @@ async function createFolder (data) {
   return newFolder.save()
 }
 
-
-async function updateFolder () {
+async function updateFolder (id, { name }) {
 
 }
 
-async function deleteFolder () {
-
+async function deleteFolder (id) {
+  // Has to delete all files & folders inside !
 }

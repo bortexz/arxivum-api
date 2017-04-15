@@ -14,7 +14,8 @@ const config = {
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || 'admin',
 
   // Security options
-  JWT_SECRET: process.env.JWT_SECRET || 's0m3th1nG_R4nd0M' + Math.round(Math.random() * 100),
+  // JWT_SECRET: process.env.JWT_SECRET || 's0m3th1nG_R4nd0M' + Math.round(Math.random() * 100),
+  JWT_SECRET: process.env.JWT_SECRET || 's0m3th1nG_R4nd0M',
 
   // Webseed options (Maybe upload to webseed directly ?)
   WEBSEED_FOLDER:

@@ -1,11 +1,4 @@
-let createTorrent = require('create-torrent')
-
-function fsStreamPromise (stream) {
-  return new Promise((resolve, reject) => {
-    stream.on('finish', () => resolve())
-    stream.on('error', (e) => reject(e))
-  })
-}
+const createTorrent = require('create-torrent')
 
 function createTorrentPromise (path, opts) {
   return new Promise((resolve, reject) => {
@@ -17,6 +10,5 @@ function createTorrentPromise (path, opts) {
 }
 
 module.exports = {
-  fsStreamPromise,
   createTorrentPromise
 }

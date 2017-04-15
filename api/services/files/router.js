@@ -5,24 +5,22 @@ const { isAuthenticated } = require('../../middleware/authentication')
 const {
   getFile,
   deleteFile,
-  // Upload functions
-  loadFiles,
-  encryptAndStore,
-  generateTorrents,
-  saveModels,
-  completeUpload
+  updateFile,
+  uploadFiles
+  // loadFiles,
+  // encryptAndStore,
+  // generateTorrents,
+  // saveModels,
+  // completeUpload
 } = require('./middleware')
 
-filesRouter.get('/:id', getFile)
+filesRouter.get('/:id', isAuthenticated, getFile)
 filesRouter.del('/:id', isAuthenticated, isAdmin, deleteFile)
+filesRouter.patch('/:id', isAuthenticated, isAdmin, updateFile)
 
 filesRouter.post('/',
   isAuthenticated,
   isAdmin,
-  loadFiles,
-  encryptAndStore,
-  generateTorrents,
-  saveModels,
-  completeUpload)
+  uploadFiles)
 
 module.exports = filesRouter

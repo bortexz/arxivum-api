@@ -12,7 +12,8 @@ require('./modules/database')
 
 // TODO: Remove by default, allow by options.
 app.use(cors({
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
 }))
 
 // Global middlewares
