@@ -1,24 +1,9 @@
-// const File = require('./model')
 const asyncBusboy = require('async-busboy')
-// const path = require('path')
-// const fs = require('fs')
-// const qcrypto = require('crypto-promise')
-// const crypto = require('crypto')
-const log = require('../../modules/logger')('arxivum:files:middleware')
-// const uuid = require('uuid')
-// const { createTorrentPromise } = require('./utils')
-// const streamToPromise = require('stream-to-promise')
-const fileController = require('./controller')
 const R = require('ramda')
-// const E = require('./errors')
-// const {
-//   WEBSEED_FOLDER,
-//   PUBLIC_API_URL,
-//   PUBLIC_TRACKER_URL
-// } = require('../../config')
-// const urljoin = require('url-join')
 
-// const ENCRYPT_ALGO = 'aes-256-cbc'
+const log = require('../../modules/logger')('arxivum:files:middleware')
+const fileController = require('./controller')
+
 const FILE_LIST_SCREEN = '_id name size torrent'
 const FILE_SCREEN = '_id name size torrent encryption_key'
 
@@ -26,14 +11,7 @@ module.exports = {
   getFile,
   deleteFile,
   updateFile,
-  // Upload specific
   uploadFiles,
-  // loadFiles,
-  // encryptAndStore,
-  // generateTorrents,
-  // saveModels,
-  // completeUpload,
-  // constants
   FILE_SCREEN,
   FILE_LIST_SCREEN
 }
