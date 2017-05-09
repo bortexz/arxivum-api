@@ -50,7 +50,7 @@ async function getFile (ctx, next) {
 async function deleteFile (ctx, next) {
   // Get file, along with encrypted_name
   try {
-    await fileController.deleteFile(ctx.params.id)
+    await fileController.deleteFiles({ _id: ctx.params.id })
     ctx.status = 200
   } catch (e) {
     if (e.name === 'CastError') {

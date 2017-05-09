@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('mz/fs')
 const path = require('path')
 const uuid = require('uuid')
 const qcrypto = require('crypto-promise')
@@ -21,7 +21,7 @@ module.exports = {
   getFile,
   getFiles,
   updateFile,
-  deleteFile,
+  deleteFiles,
   uploadFiles
 }
 
@@ -44,18 +44,22 @@ async function updateFile (id, { name }) {
   }, { name })
 }
 
-async function deleteFile (_id) {
-  const file = await File
-      .findOne({ _id })
+async function deleteFiles (query) {
+  const files = await File
+      .find(query)
 
-  if (file === null) {
-    throw new Error('FileNotFound')
+  if (files === []) {
+    throw new Error(E.FILE_NOT_FOUND_ERROR(query))
   }
 
-  fs.unlink(path.resolve(WEBSEED_FOLDER, file.encrypted_name))
-  await file.remove()
+  await Promise.all(
+    R.map(
+      async file => {
+        await fs.unlink(path.resolve(WEBSEED_FOLDER, file.encrypted_name))
+        await file.remove()
+      }, files)
+  )
 }
-
 /**
  * Upload files
  */
