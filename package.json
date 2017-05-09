@@ -28,6 +28,7 @@
     "koa-router": "^7.0.1",
     "mongoose": "^4.7.2",
     "mongoose-path-tree": "https://github.com/bertofer/mongoose-path-tree",
+    "mz": "^2.6.0",
     "nodemailer": "^3.0.2",
     "ramda": "^0.23.0",
     "stream-to-promise": "^2.2.0",
