@@ -1,5 +1,9 @@
-const Folder = require('./model')
 const R = require('ramda')
+
+const filesController = require('../files/controller')
+const Folder = require('./model')
+const E = require('./errors')
+const log = require('../../modules/logger')('arxivum:api:folders:controller')
 
 module.exports = {
   getFolder,
@@ -61,9 +65,54 @@ async function createFolder (data) {
 }
 
 async function updateFolder (id, { name }) {
-
+  return await Folder.findOneAndUpdate({
+    _id: id
+  }, { name })
 }
 
-async function deleteFolder (id) {
-  // Has to delete all files & folders inside !
+/**
+ * Function that promisifies the getChildrenTree schema method
+ * @param {*} folder Mongoose folder document
+ */
+const _getChildrenTreePromisified = folder =>
+  new Promise((resolve, reject) => {
+    folder.getChildrenTree({ recursive: true, allowEmptyChildren: true },
+      (err, tree) => {
+        err ? reject(err) : resolve(tree)
+      })
+  })
+
+/**
+ * Function that receives a tree of folders and removes it recursively
+ */
+async function _deleteFolderTree (root) {
+  try {
+    // Delete children
+    await Promise.all(
+      R.map(async folder => await _deleteFolderTree(folder), root.children)
+    )
+    // Delete related files
+    await filesController.deleteFiles({ folder: root._id })
+    // Delete folder
+    return await Folder.remove({ _id: root._id })
+  } catch (err) {
+    throw err
+  }
+}
+
+async function deleteFolder (_id) {
+  const folder = await Folder.findOne({ _id })
+  try {
+    const childrenTree = await _getChildrenTreePromisified(folder)
+    folder.children = childrenTree
+  } catch (err) {
+    log(err)
+    throw new Error(E.GET_CHILDREN_TREE_ERROR)
+  }
+  try {
+    return await _deleteFolderTree(folder)
+  } catch (err) {
+    log(err)
+    throw new Error()
+  }
 }

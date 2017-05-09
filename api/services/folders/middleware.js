@@ -79,9 +79,17 @@ async function getTree (ctx, next) {
 }
 
 async function updateFolder (ctx, next) {
-  ctx.body = 'Not implemented yet'
+  const id = ctx.params.id
+  const data = ctx.request.body
+  try {
+    ctx.body = await foldersController.updateFolder(id, data)
+  } catch (e) {
+    log(e)
+    ctx.throw(500, 'Error updating folder')
+  }
 }
 
 async function deleteFolder (ctx, next) {
-  ctx.body = 'Not implemented yet'
+  await foldersController.deleteFolder(ctx.params.id)
+  ctx.status = 200
 }
