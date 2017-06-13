@@ -1,15 +1,10 @@
-# arxivum
-Self hosted cloud to store files and share them.
-
-## ENV variables of the config
-```
 const path = require('path')
 
 const config = {
   // Main url for the application. If the others are not specified,
   // This one will be taken adding prefixes (/tracker, /api,...) no prefix is
   // front end app
-  PUBLIC_URL: process.env.PUBLIC_URL || 'localhost: 4200',
+  PUBLIC_URL: process.env.PUBLIC_URL || 'localhost:4200',
 
   // Database options
   DATABASE_URL: process.env.DATABASE_URL || 'mongodb://localhost/arxivum-dev',
@@ -27,7 +22,10 @@ const config = {
     process.env.WEBSEED_FOLDER || path.resolve(__dirname, '../../files'),
 
   // Public url where to access this api
-  PUBLIC_API_URL: process.env.PUBLIC_URL || 'http://localhost:2000/',
+  PUBLIC_API_URL: process.env.PUBLIC_API_URL ||
+    process.env.PUBLIC_URL
+      ? path.join(process.env.PUBLIC_URL, 'api')
+      : 'http://localhost:2000/',
 
   // Where the tracker is
   PUBLIC_TRACKER_URL: process.env.PUBLIC_TRACKER_URL || 'ws://localhost:2000',
@@ -35,11 +33,10 @@ const config = {
   // Nodemailer options
   // For now only this ones are supported
   // https://nodemailer.com/smtp/well-known/
-  EMAILER_SMTP_SERVICE: process.env.EMAILER_SMTP_SERVICE || 'test',
-  EMAILER_PUBLIC_EMAIL: process.env.EMAILER_PUBLIC_USER || 'test@test',
-  EMAILER_AUTH_USER: process.env.EMAILER_AUTH_EMAIL || 'test@test',
-  EMAILER_AUTH_PASSWORD: process.env.EMAILER_AUTH_PASSWORD || 'test'
+  EMAILER_SMTP_SERVICE: process.env.EMAILER_SMTP_SERVICE,
+  EMAILER_PUBLIC_EMAIL: process.env.EMAILER_PUBLIC_USER,
+  EMAILER_AUTH_USER: process.env.EMAILER_AUTH_EMAIL,
+  EMAILER_AUTH_PASSWORD: process.env.EMAILER_AUTH_PASSWORD
 }
 
 module.exports = config
-```
