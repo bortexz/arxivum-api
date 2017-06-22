@@ -103,9 +103,9 @@ async function uploadFiles (files, folder) {
 
       /** Generate torrent file */
       const downloadUrl =
-        urljoin(PUBLIC_API_URL, 'webseed', model.encrypted_name)
+        urljoin(PUBLIC_API_URL, model.encrypted_name)
 
-      const trackerUrl = urljoin(PUBLIC_TRACKER_URL, 'tracker', 'announce')
+      const trackerUrl = urljoin(PUBLIC_TRACKER_URL, 'announce')
 
       const torrentOpts = {
         name: model.file.filename,
