@@ -2,7 +2,7 @@
  * Module to send emails
  */
 const nodemailer = require('nodemailer')
-const config = require('../config')
+const config = require('../../config')
 const debug = require('debug')('arxivum:api:emailer')
 
 module.exports = {

@@ -7,7 +7,7 @@ const config = {
   PUBLIC_URL: 'localhost:4200',
 
   // Database options
-  DATABASE_URL: 'mongodb://localhost/arxivum-dev',
+  DATABASE_URL: process.env.DATABASE_URL || 'mongodb://localhost/arxivum-dev',
 
   // Initial admin email for the database.
   ADMIN_EMAIL: 'admin@admin',
@@ -18,17 +18,17 @@ const config = {
   JWT_SECRET: 's0m3th1nG_R4nd0M',
 
   // Webseed options (Maybe upload to webseed directly ?)
-  WEBSEED_FOLDER: path.resolve(__dirname, '../../files'),
+  WEBSEED_FOLDER: path.resolve(__dirname, '../files'),
 
   // Public url where to access this api
   // Public url where to access this api
-  PUBLIC_API_URL: 'http://localhost:2000/',
+  PUBLIC_API_URL: 'http://localhost:3000/',
 
   // Where the tracker is (WebSocket tracker)
-  PUBLIC_TRACKER_URL: 'ws://localhost:2000/tracker',
+  PUBLIC_TRACKER_URL: 'ws://localhost:4000/',
 
   // Where the webseed is
-  PUBLIC_WEBSEED_URL: 'ws://localhost:2000/webseed',
+  PUBLIC_WEBSEED_URL: 'http://localhost:5000/',
 
   // Nodemailer options
   // For now only this ones are supported
@@ -36,7 +36,12 @@ const config = {
   EMAILER_SMTP_SERVICE: 'test',
   EMAILER_PUBLIC_EMAIL: 'test@test',
   EMAILER_AUTH_USER: 'test@test',
-  EMAILER_AUTH_PASSWORD: 'test'
+  EMAILER_AUTH_PASSWORD: 'test',
+
+  // Private PORTS
+  API_PORT: 3000,
+  TRACKER_PORT: 4000,
+  WEBSEED_PORT: 5000
 }
 
 module.exports = config

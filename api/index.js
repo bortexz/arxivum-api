@@ -1,11 +1,13 @@
+// Environment
+global.ENV = process.env.NODE_ENV || 'dev'
+
 const Koa = require('koa')
 const cors = require('koa-cors')
 const log = require('./modules/logger')('arxivum:api')
 
-const app = new Koa()
+const { API_PORT } = require('../config/')
 
-// Environment
-global.ENV = process.env.NODE_ENV || 'dev'
+const app = new Koa()
 
 // Init database
 require('./modules/database')
@@ -30,6 +32,6 @@ app.use(bodyParser())
 const apiRouter = require('./modules/apiRouter')
 app.use(apiRouter.routes())
 
-app.listen(3000)
+app.listen(API_PORT)
 
 log('App listening on port 3000')

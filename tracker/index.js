@@ -1,5 +1,8 @@
+// Environment
+global.ENV = process.env.NODE_ENV || 'dev'
 const Server = require('bittorrent-tracker').Server
 const debug = require('debug')('arxivum:tracker')
+const { TRACKER_PORT } = require('../config/')
 
 const server = new Server({
   udp: true, // enable udp server? [default=true]
@@ -7,7 +10,8 @@ const server = new Server({
   ws: true, // enable websocket server? [default=true]
   stats: true, // enable web-based statistics? [default=true]
   filter: function (infoHash, params, cb) {
-    // debug('tracker received request!!')
+    debug('tracker received request for infoHash', infoHash)
+    cb(true)
     // var allowed = (infoHash === 'aaa67059ed6bd08362da625b3ae77f6f4a075aaa')
     // cb(allowed)
   }
@@ -44,4 +48,5 @@ server.on('stop', function (addr) {
 })
 
 // start tracker server listening! Use 0 to listen on a random free port.
-server.listen(4000, 'localhost')
+// server.listen(process.env.TRACKER_PORT || 4000, 'localhost')
+server.listen(TRACKER_PORT)

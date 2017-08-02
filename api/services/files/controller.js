@@ -11,9 +11,9 @@ const File = require('./model')
 const log = require('../../modules/logger')('arxivum:files:controller')
 const {
   WEBSEED_FOLDER,
-  PUBLIC_API_URL,
+  PUBLIC_WEBSEED_URL,
   PUBLIC_TRACKER_URL
-} = require('../../config')
+} = require('../../../config')
 const { createTorrentPromise } = require('./utils')
 const E = require('./errors')
 
@@ -103,7 +103,7 @@ async function uploadFiles (files, folder) {
 
       /** Generate torrent file */
       const downloadUrl =
-        urljoin(PUBLIC_API_URL, model.encrypted_name)
+        urljoin(PUBLIC_WEBSEED_URL, model.encrypted_name)
 
       const trackerUrl = urljoin(PUBLIC_TRACKER_URL, 'announce')
 

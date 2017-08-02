@@ -1,6 +1,6 @@
 const Invitation = require('./model')
 const emailer = require('../../modules/emailer')
-const config = require('../../config')
+const config = require('../../../config')
 const debug = require('debug')('arxivum:api:invitations')
 
 module.exports = {

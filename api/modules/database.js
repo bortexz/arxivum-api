@@ -1,8 +1,7 @@
 const log = require('./logger')('arxivum:database')
 const mongoose = require('mongoose')
 mongoose.Promise = Promise
-const {DATABASE_URL, ADMIN_EMAIL, ADMIN_PASSWORD} = require('../config')
-
+const {DATABASE_URL, ADMIN_EMAIL, ADMIN_PASSWORD} = require('../../config')
 
 mongoose.connect(DATABASE_URL)
 

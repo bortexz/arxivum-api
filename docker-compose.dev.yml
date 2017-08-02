@@ -1,0 +1,44 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 27017
+
+  api:
+    image: albertoferbcn/arxivum-api
+    ports:
+      - 3000:3000
+    volumes:
+      # - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./files:/app/files
+    links:
+      - mongo
+    environment:
+      - NODE_ENV=dev
+      - PUBLIC_URL=http://localhost:4200
+      - DATABASE_URL=mongodb://mongo/arxivum-dev
+      - ADMIN_EMAIL=admin@admin
+      - ADMIN_PASSWORD=admin
+      - JWT_SECRET=randomS3cret
+      - WEBSEED_FOLDER=/app/files
+      - PUBLIC_API_URL=http://localhost:3000
+      - PUBLIC_TRACKER_URL=http://localhost:4000
+      - PUBLIC_WEBSEED_URL=http://localhost:5000
+      - DEBUG=arxivum:*
+
+  tracker:
+    image: albertoferbcn/arxivum-tracker
+    ports:
+      - 4000:4000
+    environment:
+      - DEBUG=arxivum:*
+
+  webseed:
+    image: albertoferbcn/arxivum-webseed
+    ports:
+      - 5000:5000
+    volumes:
+      - ./files:/app/files
+    environment:
+      - DEBUG=arxivum:*

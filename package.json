@@ -4,12 +4,10 @@
   "description": "Self hosted cloud to save files and share them securely",
   "main": "index.js",
   "scripts": {
-    "docker-build": "docker build -t albertoferbcn/arxivum-api .",
-    "docker-run": "docker run -p 2000:2000 albertoferbcn/arxivum-api",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node .",
-    "start-dev": "DEBUG=arxivum:* node .",
-    "start-watch": "nodemon --watch . --exec 'npm run start-dev'"
+    "start-api": "DEBUG=arxivum:* node ./api/",
+    "start-tracker": "DEBUG=arxivum:* node ./tracker/",
+    "start-webseed": "DEBUG=arxivum:* node ./webseed/",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alberto Fernandez (Bertofer)",
   "license": "MIT",
