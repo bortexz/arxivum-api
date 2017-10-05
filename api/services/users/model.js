@@ -25,7 +25,15 @@ const userSchema = new Schema({
 userSchema.pre('save', updatePasswordIfDifferent)
 userSchema.pre('save', updateUpdated)
 
-userSchema.methods.checkPassword = checkPassword
+userSchema.methods.checkPassword = function (password) {
+  const self = this
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, self.password, function (err, isMatch) {
+      if (err) reject(err)
+      resolve(isMatch)
+    })
+  })
+}
 
 const User = mongoose.model('User', userSchema)
 
@@ -60,11 +68,11 @@ function updatePasswordIfDifferent (next) {
   })
 }
 
-function checkPassword (password) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, this.password, function (err, isMatch) {
-      if (err) reject(err)
-      resolve(isMatch)
-    })
-  })
-}
+// function checkPassword (password) {
+//   return new Promise((resolve, reject) => {
+//     bcrypt.compare(password, this.password, function (err, isMatch) {
+//       if (err) reject(err)
+//       resolve(isMatch)
+//     })
+//   })
+// }

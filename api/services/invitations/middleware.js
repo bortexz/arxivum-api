@@ -1,62 +1,63 @@
-const Invitation = require('./model')
-const emailer = require('../../modules/emailer')
-const config = require('../../../config')
-const debug = require('debug')('arxivum:api:invitations')
+const E = require('./errors')
+const controller = require('./controller')
 
 module.exports = {
   createInvitation,
   getInvitationByToken,
-  getAllInvitations
+  getAllInvitations,
+  resendInvitation,
+  deleteInvitation
+}
+
+const createInvitationErrorCodes = {
+  [E.INCORRECT_DATA]: 400,
+  [E.INVITATION_ALREADY_EXISTS]: 400,
+  [E.INVITATION_NOT_FOUND]: 404
 }
 
 async function createInvitation (ctx, next) {
   const body = ctx.request.body
-  const newInvitation = new Invitation(body)
   try {
-    const savedInvitation = await newInvitation.save()
-    ctx.body = savedInvitation
-
-    // sends email
-    emailer.sendInvitationRegisterEmail({
-      email: savedInvitation.email,
-      token: savedInvitation.token,
-      name: 'Someone', // read from user?
-      url: config.PUBLIC_URL
-    })
+    const newInvitation = await controller.createInvitation(body.email)
+    ctx.body = newInvitation
   } catch (e) {
-    if (e.code === 11000) {
-      ctx.throw(400, 'This invitation email already exists')
-    }
-    if (e.name === 'ValidationError') {
-      ctx.throw(400, 'Incorrect data')
-    }
-    throw new Error()
+    ctx.throw(createInvitationErrorCodes[e.name] || 500, e.name)
   }
 }
 
 async function getInvitationByToken (ctx, next) {
   const token = ctx.request.query.token
-  const invitation = await Invitation.find({ token, fulfilled: false })
+  let invitation
   try {
-    if (!invitation) throw new Error('Not found')
+    invitation = await controller.getInvitationByToken(token)
   } catch (e) {
-    if (e.name === 'Not found') ctx.throw(404, 'Not found')
+    ctx.throw(createInvitationErrorCodes[e.name] || 500, e.name)
   }
+  ctx.body = invitation
 }
 
 async function getAllInvitations (ctx, next) {
   try {
-    console.log(ctx.request.query)
-    const fulfilled = ctx.request.query.fulfilled || false
-    const invitations = await Invitation.find({ fulfilled })
+    const fulfilled = ctx.request.query.fulfilled
+    const invitations = await controller.getAllInvitations(fulfilled)
     ctx.body = invitations
   } catch (err) {
-    debug(err)
     ctx.throw(500, 'Error occurred while accessing database')
   }
 }
 
-// async function hasInvitation (ctx, next) {
-//   let email = ctx.body.email
-//   let token = ctx.body.token
-// }
+async function resendInvitation (ctx, next) {
+  const invId = ctx.params.id
+  await controller.resendInvitation(invId)
+  ctx.status = 200
+}
+
+async function deleteInvitation (ctx, next) {
+  const invId = ctx.params.id
+  try {
+    await controller.deleteInvitation(invId)
+    ctx.status = 200
+  } catch (e) {
+    if (e.name === E.INVITATION_NOT_FOUND) ctx.throw(404, 'Not found')
+  }
+}

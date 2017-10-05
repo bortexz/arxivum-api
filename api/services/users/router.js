@@ -5,7 +5,8 @@ const {
   getUser,
   deleteUser,
   updateUser,
-  createUserFactory
+  createUserFactory,
+  changePassword
 } = require('./middleware')
 
 const {
@@ -24,6 +25,7 @@ usersRouter.post('/register', createUserFactory(true))
 
 usersRouter.post('/', isAuthenticated, isAdmin, createUserFactory(false))
 
+usersRouter.put('/password', isAuthenticated, changePassword)
 usersRouter.del('/:id', isAuthenticated, isAdmin, deleteUser)
 usersRouter.put('/:id', isSameUserOrAdmin, updateUser)
 

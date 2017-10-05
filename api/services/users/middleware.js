@@ -10,7 +10,8 @@ module.exports = {
   getUser,
   getUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  changePassword
 }
 
 // Screen to use when returning results
@@ -22,7 +23,7 @@ function createUserFactory (isRegister) {
     let invitation
     try {
       if (isRegister) {
-        invitation = await invitationCtrl.getInvitation(userData.email, false)
+        invitation = await invitationCtrl.getInvitationByEmail(userData.email, false)
         if (!invitation) return ctx.throw(401, 'You dont have an invitation to join')
       }
 
@@ -32,13 +33,11 @@ function createUserFactory (isRegister) {
       }
 
       ctx.body = R.pick(USER_SCREEN.split(' '), newUser)
-
-      // TODO: send invitation email
     } catch (e) {
       if (e.code === 11000) {
         ctx.throw(400, 'This user already exists')
       }
-      log.error(e)
+      log(e)
       throw new Error()
     }
   }
@@ -75,6 +74,7 @@ async function getUsers (ctx) {
   }
 }
 
+// Not in use, for change password there is another function
 async function updateUser (ctx) {
   // Only name and password can be updated for now
   const {name, password} = ctx.request.body
@@ -100,5 +100,18 @@ async function deleteUser (ctx) {
     }
     log(e)
     throw new Error()
+  }
+}
+
+async function changePassword (ctx) {
+  const { current_password, new_password } = ctx.request.body
+  // get user
+  const user = await User.findOne({_id: ctx.state.user.id})
+  if (await user.checkPassword(current_password)) {
+    user.password = new_password
+    await user.save()
+    ctx.status = 200
+  } else {
+    ctx.throw(404, 'Current password not correct')
   }
 }

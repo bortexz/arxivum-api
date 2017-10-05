@@ -8,10 +8,10 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceRoot}/index.js",
+      "program": "${workspaceRoot}/api/index.js",
       "cwd": "${workspaceRoot}",
       "env": {
-        "DEBUG" : "arxivum:*"
+        "DEBUG":"arxivum:*"
       }
     },
     {

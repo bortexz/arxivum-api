@@ -29,7 +29,7 @@ async function sendInvitationRegisterEmail (opts) {
     from: config.EMAILER_PUBLIC_EMAIL, // sender address
     to: opts.email, // list of receivers
     subject: `${opts.name} has invited you to it's Arxivum!`, // Subject line
-    html: `${opts.url} + ${opts.token}` // html body
+    html: `Register on my Arxivum on this address ${opts.url}/register?token=${opts.token}&email=${opts.email}` // html body
   }
 
   if (global.ENV === 'dev') {
