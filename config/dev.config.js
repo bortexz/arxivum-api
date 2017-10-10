@@ -33,10 +33,12 @@ const config = {
   // Nodemailer options
   // For now only this ones are supported
   // https://nodemailer.com/smtp/well-known/
-  EMAILER_SMTP_SERVICE: 'test',
-  EMAILER_PUBLIC_EMAIL: 'test@test',
-  EMAILER_AUTH_USER: 'test@test',
-  EMAILER_AUTH_PASSWORD: 'test',
+  // EMAILER_SMTP_SERVICE: 'test',
+  EMAILER_PORT: 587,
+  EMAILER_HOST: 'smtp.upc.edu',
+  EMAILER_PUBLIC_EMAIL: 'alberto.fernandez.cubero@est.fib.upc.edu',
+  EMAILER_AUTH_USER: 'alberto.fernandez.cubero',
+  EMAILER_AUTH_PASSWORD: 'otrebla19914032',
 
   // Private PORTS
   API_PORT: 3000,

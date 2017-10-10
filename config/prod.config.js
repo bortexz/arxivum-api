@@ -33,7 +33,9 @@ const config = {
   // Nodemailer options
   // For now only this ones are supported
   // https://nodemailer.com/smtp/well-known/
-  EMAILER_SMTP_SERVICE: env.EMAILER_SMTP_SERVICE,
+  // EMAILER_SMTP_SERVICE: env.EMAILER_SMTP_SERVICE,
+  EMAILER_PORT: env.EMAILER_PORT,
+  EMAILER_HOST: env.EMAILER_HOST,
   EMAILER_PUBLIC_EMAIL: env.EMAILER_PUBLIC_EMAIL,
   EMAILER_AUTH_USER: env.EMAILER_AUTH_USER,
   EMAILER_AUTH_PASSWORD: env.EMAILER_AUTH_PASSWORD,
