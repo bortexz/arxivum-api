@@ -5,7 +5,7 @@ const Koa = require('koa')
 const cors = require('koa-cors')
 const log = require('./modules/logger')('arxivum:api')
 
-const { API_PORT } = require('../config/')
+const { API_PORT, PUBLIC_URL } = require('../config/')
 
 const app = new Koa()
 
@@ -13,10 +13,21 @@ const app = new Koa()
 require('./modules/database')
 
 // TODO: Remove by default, allow by options.
-app.use(cors({
-  credentials: true,
-  methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
-}))
+let corsOpts
+if (process.env.NODE_ENV === 'prod') {
+  corsOpts = {
+    origin: PUBLIC_URL,
+    credentials: true,
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
+  }
+} else {
+  corsOpts = {
+    credentials: true,
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
+  }
+}
+
+app.use(cors(corsOpts))
 
 // Global middlewares
 const logger = require('./middleware/requestLogger')
