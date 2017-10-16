@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceRoot}/api/index.js",
+      "program": "${workspaceRoot}/webseed/index.js",
       "cwd": "${workspaceRoot}",
       "env": {
         "DEBUG":"arxivum:*"

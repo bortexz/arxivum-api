@@ -9,13 +9,6 @@ module.exports = {
   sendInvitationRegisterEmail
 }
 
-// const transporter = nodemailer.createTransport({
-//   service: config.EMAILER_SMTP_SERVICE,
-//   auth: {
-//     user: config.EMAILER_AUTH_USER,
-//     pass: config.EMAILER_AUTH_PASSWORD
-//   }
-// })
 const transporter = nodemailer.createTransport({
   port: parseInt(config.EMAILER_PORT),
   host: config.EMAILER_HOST,
@@ -25,14 +18,6 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-// const transporter = nodemailer.createTransport({
-//   port: 587,
-//   host: 'smtp.upc.edu',
-//   auth: {
-//     user: 'alberto.fernandez.cubero',
-//     pass: 'otrebla19914032'
-//   }
-// })
 
 /**
  * opts has the following properties:
@@ -49,9 +34,9 @@ async function sendInvitationRegisterEmail (opts) {
     html: `Register on my Arxivum on this address ${opts.url}/register?token=${opts.token}&email=${opts.email}` // html body
   }
 
-  // if (global.ENV === 'dev') {
-  //   return debug('Development mode -> Email not sent', mailOptions)
-  // }
+  if (global.ENV === 'dev') {
+    return debug('Development mode -> Email not sent', mailOptions)
+  }
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       return debug('Error sending email', error)

@@ -34,11 +34,11 @@ const config = {
   // For now only this ones are supported
   // https://nodemailer.com/smtp/well-known/
   // EMAILER_SMTP_SERVICE: 'test',
-  EMAILER_PORT: 587,
-  EMAILER_HOST: 'smtp.upc.edu',
-  EMAILER_PUBLIC_EMAIL: 'alberto.fernandez.cubero@est.fib.upc.edu',
-  EMAILER_AUTH_USER: 'alberto.fernandez.cubero',
-  EMAILER_AUTH_PASSWORD: 'otrebla19914032',
+  EMAILER_PORT: null,
+  EMAILER_HOST: null,
+  EMAILER_PUBLIC_EMAIL: null,
+  EMAILER_AUTH_USER: null,
+  EMAILER_AUTH_PASSWORD: null,
 
   // Private PORTS
   API_PORT: 3000,

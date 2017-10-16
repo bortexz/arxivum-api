@@ -13,9 +13,26 @@ const { WEBSEED_PORT } = require('../config/')
 
 const app = new Koa()
 
-app.use(cors()) // TODO : Optional | Dependent of dev/prod
+// app.use(cors({
+//   // headers: ['Range', 'range', 'Accept', 'Accept-Encoding', 'Content-Type']
+// })) // TODO : Optional | Dependent of dev/prod
 
-koaRouter.get('/:file', range, async (ctx, next) => {
+app.use(cors())
+
+koaRouter.get('/:file',
+async (ctx, next) => {
+  ctx.set('Cache-Control', 'no-cache, no-store')
+  ctx.set('Pragma', 'no-cache')
+  var range = ctx.header.range
+
+  if (!range) {
+    console.log('no Range!')
+    ctx.status = 416
+    return
+  }
+  await next()
+},
+range, async (ctx, next) => {
   ctx.body = fs.createReadStream(path.join('./files', ctx.params.file))
 })
 
