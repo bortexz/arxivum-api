@@ -8,3 +8,4 @@ files/*
 .vscode/
 
 npm-debug.log*
+test/files/*

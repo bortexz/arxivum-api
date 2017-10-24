@@ -2,7 +2,7 @@ const Invitation = require('./model')
 const emailer = require('../../modules/emailer')
 const config = require('../../../config')
 const E = require('./errors')
-
+const LIST_SCREEN = '_id email fulfilled token'
 // New version!
 module.exports = {
   createInvitation,
@@ -63,9 +63,9 @@ async function getAllInvitations (fulfilled) {
   let invitations
   try {
     if (fulfilled !== undefined) {
-      invitations = await Invitation.find({ fulfilled })
+      invitations = await Invitation.find({ fulfilled }, LIST_SCREEN)
     } else {
-      invitations = await Invitation.find()
+      invitations = await Invitation.find({}, LIST_SCREEN)
     }
   } catch (err) {
     throw err

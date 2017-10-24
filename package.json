@@ -7,7 +7,7 @@
     "start-api": "DEBUG=arxivum:* node ./api/",
     "start-tracker": "DEBUG=arxivum:* node ./tracker/",
     "start-webseed": "DEBUG=arxivum:* node ./webseed/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --verbose --resporter spec test/*.spec.js"
   },
   "author": "Alberto Fernandez (Bertofer)",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "crypto-promise": "^1.0.2",
     "debug": "^2.2.0",
     "http-proxy": "^1.15.2",
+    "killable": "^1.0.0",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
     "koa-cors": "0.0.16",
@@ -30,12 +31,16 @@
     "mongoose-path-tree": "https://github.com/bertofer/mongoose-path-tree",
     "mz": "^2.6.0",
     "nodemailer": "^3.0.2",
+    "parse-torrent": "^5.8.3",
     "ramda": "^0.23.0",
     "stream-to-promise": "^2.2.0",
+    "supertest": "^3.0.0",
     "url-join": "^1.1.0",
     "uuid": "^3.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
     "nodemon": "^1.11.0",
     "standard": "^8.5.0"
   }

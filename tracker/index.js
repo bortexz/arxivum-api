@@ -49,4 +49,4 @@ server.on('stop', function (addr) {
 
 // start tracker server listening! Use 0 to listen on a random free port.
 // server.listen(process.env.TRACKER_PORT || 4000, 'localhost')
-server.listen(TRACKER_PORT)
+module.exports = server.listen(TRACKER_PORT)

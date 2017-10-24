@@ -1,4 +1,5 @@
 const path = require('path')
+const env = process.env
 
 const config = {
   // Main url for the application. If the others are not specified,
@@ -18,7 +19,10 @@ const config = {
   JWT_SECRET: 's0m3th1nG_R4nd0M',
 
   // Webseed options (Maybe upload to webseed directly ?)
-  WEBSEED_FOLDER: path.resolve(__dirname, '../files'),
+  WEBSEED_FOLDER: env.WEBSEED_FOLDER || path.resolve(__dirname, '../files'),
+
+  // Webseed path for the webseed itself
+  WEBSEED_ROOT: env.WEBSEED_ROOT || './files',
 
   // Public url where to access this api
   // Public url where to access this api
@@ -41,9 +45,9 @@ const config = {
   EMAILER_AUTH_PASSWORD: null,
 
   // Private PORTS
-  API_PORT: 3000,
-  TRACKER_PORT: 4000,
-  WEBSEED_PORT: 5000
+  API_PORT: env.API_PORT || 3000,
+  TRACKER_PORT: env.TRACKER_PORT || 4000,
+  WEBSEED_PORT: env.WEBSEED_PORT || 5000
 }
 
 module.exports = config

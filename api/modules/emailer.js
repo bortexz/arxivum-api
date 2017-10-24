@@ -18,7 +18,6 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-
 /**
  * opts has the following properties:
  * - email: Who to send the email

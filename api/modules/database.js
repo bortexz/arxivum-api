@@ -3,8 +3,6 @@ const mongoose = require('mongoose')
 mongoose.Promise = Promise
 const {DATABASE_URL, ADMIN_EMAIL, ADMIN_PASSWORD} = require('../../config')
 
-mongoose.connect(DATABASE_URL)
-
 // CREATE ADMIN IF NOT EXIST
 const User = require('../services/users/model')
 
@@ -27,7 +25,19 @@ async function createAdminIfNeeded () {
   }
 }
 
-mongoose.connection.on('connected', async () => {
-  log('Connected to database')
-  await createAdminIfNeeded()
-})
+async function connect () {
+  return new Promise((resolve, reject) => {
+    mongoose.connect(DATABASE_URL, async (err) => {
+      if (err) reject(err)
+      else {
+        log('Connected to database')
+        await createAdminIfNeeded()
+        resolve()
+      }
+    })
+  })
+}
+
+module.exports = {
+  connect
+}

@@ -19,7 +19,7 @@ const {
 } = require('../../middleware/authentication.js')
 
 usersRouter.get('/', isAuthenticated, isAdmin, getUsers)
-usersRouter.get('/:id', isSameUserOrAdmin, getUser)
+usersRouter.get('/:id', isAuthenticated, isSameUserOrAdmin, getUser)
 
 usersRouter.post('/register', createUserFactory(true))
 
@@ -27,7 +27,7 @@ usersRouter.post('/', isAuthenticated, isAdmin, createUserFactory(false))
 
 usersRouter.put('/password', isAuthenticated, changePassword)
 usersRouter.del('/:id', isAuthenticated, isAdmin, deleteUser)
-usersRouter.put('/:id', isSameUserOrAdmin, updateUser)
+usersRouter.put('/:id', isAuthenticated, isSameUserOrAdmin, updateUser)
 
 module.exports = usersRouter
 

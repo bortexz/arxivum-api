@@ -17,8 +17,11 @@ const config = {
   // JWT_SECRET: process.env.JWT_SECRET || 's0m3th1nG_R4nd0M' + Math.round(Math.random() * 100),
   JWT_SECRET: env.JWT_SECRET,
 
-  // Webseed options (Maybe upload to webseed directly ?)
+  // Webseed path (Maybe upload to webseed directly ?) for the api
   WEBSEED_FOLDER: env.WEBSEED_FOLDER,
+
+  // Webseed path for the webseed itself
+  WEBSEED_ROOT: env.WEBSEED_ROOT || './files',
 
   // Public url where to access this api
   // Public url where to access this api

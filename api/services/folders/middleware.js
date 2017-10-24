@@ -44,8 +44,8 @@ async function getFolder (ctx, next) {
     if (e.name === 'CastError') {
       ctx.throw(400, 'Invalid ID')
     }
-    if (e.message === 'UserNotFound') {
-      ctx.throw(404, 'User not found')
+    if (e.message === 'FolderNotFound') {
+      ctx.throw(404, 'Folder not found')
     }
     log(e)
     throw new Error()

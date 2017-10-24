@@ -3,6 +3,7 @@ const log = require('../../modules/logger')('arxivum:users:middleware')
 const R = require('ramda')
 const userCtrl = require('./controller')
 const invitationCtrl = require('../invitations/controller')
+const InvErrors = require('../invitations/errors')
 
 module.exports = {
   // Main endpoint functions
@@ -24,7 +25,6 @@ function createUserFactory (isRegister) {
     try {
       if (isRegister) {
         invitation = await invitationCtrl.getInvitationByEmail(userData.email, false)
-        if (!invitation) return ctx.throw(401, 'You dont have an invitation to join')
       }
 
       const newUser = await userCtrl.createUser(userData)
@@ -36,17 +36,16 @@ function createUserFactory (isRegister) {
     } catch (e) {
       if (e.code === 11000) {
         ctx.throw(400, 'This user already exists')
-      }
-      log(e)
-      throw new Error()
+      } else if (e.message === InvErrors.INVITATION_NOT_FOUND) {
+        ctx.throw(404, InvErrors.INVITATION_NOT_FOUND)
+      } else throw new Error()
     }
   }
 }
 
 async function getUser (ctx) {
   try {
-    const user = userCtrl.getUser(ctx.request.params.id, USER_SCREEN)
-
+    const user = await userCtrl.getUser(ctx.params.id, USER_SCREEN)
     if (user === null) {
       throw new Error('UserNotFound')
     }
@@ -91,9 +90,10 @@ async function updateUser (ctx) {
 async function deleteUser (ctx) {
   try {
     // Only remove if not admin
-    const user = await User.findOne({_id: ctx.request.params.id})
+    const user = await User.findOne({_id: ctx.params.id})
     if (user.admin) throw new Error('CannotRemoveAdminUser')
     await user.remove()
+    ctx.status = 200
   } catch (e) {
     if (e.message === 'CannotRemoveAdminUser') {
       ctx.throw(400, 'Cannot remove admin user')

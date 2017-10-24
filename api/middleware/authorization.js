@@ -9,7 +9,7 @@ async function isAdmin (ctx, next) {
 }
 
 async function isSameUserOrAdmin (ctx, next) {
-  if (ctx.state.user.admin || (ctx.state.user.id === ctx.request.params.id)) {
+  if (ctx.state.user.admin || (ctx.state.user.id === ctx.params.id)) {
     await next()
   } else {
     ctx.throw(401, 'You cannot access this resource')

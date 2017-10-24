@@ -7,6 +7,8 @@ const fileController = require('./controller')
 const FILE_LIST_SCREEN = '_id name size torrent'
 const FILE_SCREEN = '_id name size torrent encryption_key'
 
+const E = require('./errors')
+
 module.exports = {
   getFile,
   deleteFile,
@@ -31,16 +33,16 @@ async function updateFile (ctx, next) {
  */
 async function getFile (ctx, next) {
   try {
-    ctx.body = await fileController.getFile(ctx.params.id, FILE_SCREEN)
+    const file = await fileController.getFile(ctx.params.id, FILE_SCREEN)
+    if (!file) throw new Error('FileNotFound')
+    ctx.body = file
   } catch (e) {
     log(e)
     if (e.name === 'CastError') {
       ctx.throw(400, 'Invalid ID')
-    }
-    if (e.message === 'FileNotFound') {
-      ctx.throw(404, 'File not found')
-    }
-    ctx.throw(500, 'Unknown error')
+    } else if (e.message === 'FileNotFound') {
+      ctx.throw(404, E.FILE_NOT_FOUND_ERROR(ctx.params.id))
+    } else ctx.throw(500, 'Unknown error')
   }
 }
 

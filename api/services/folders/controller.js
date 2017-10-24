@@ -25,7 +25,7 @@ async function getFolder (id, fields = 'name parent path') {
  * @param {string} id of the parent
  */
 async function getChildrenFolders (id) {
-  return await Folder.find({ parent: id })
+  return await Folder.find({ parent: id }, '_id name parent path')
 }
 
 /** helper for biuldTree */
