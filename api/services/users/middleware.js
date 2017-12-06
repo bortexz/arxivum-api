@@ -1,3 +1,4 @@
+const User = require('./model')
 const log = require('../../modules/logger')('arxivum:users:middleware')
 const R = require('ramda')
 const userCtrl = require('./controller')
