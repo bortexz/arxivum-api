@@ -22,7 +22,7 @@ async function updateFile (ctx, next) {
   const id = ctx.params.id
   const data = ctx.request.body
   try {
-    ctx.body = fileController.updateFile(id, data)
+    ctx.body = await fileController.updateFile(id, data)
   } catch (err) {
     ctx.throw(500, 'Cannot update file')
   }
