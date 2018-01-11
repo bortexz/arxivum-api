@@ -1,45 +1,49 @@
-# arxivum
-Self hosted cloud to store files and share them.
+# arxivum-api
+This repository contains the different modules of the backend of the Arxivum project.
 
-## ENV variables of the config
-```
-const path = require('path')
+The arxivum project is a final degree project that solves download efficiency by adding webtorrent to share private files, in a platform where users can only register after invitation of the administrator.
 
-const config = {
-  // Main url for the application. If the others are not specified,
-  // This one will be taken adding prefixes (/tracker, /api,...) no prefix is
-  // front end app
-  PUBLIC_URL: process.env.PUBLIC_URL || 'localhost: 4200',
+In order to have a distributed system like webtorrent to share our files, this backend contains 3 different modules:
+- API that stores the information and files
+- Tracker to find other connected peers
+- Webseed to serve as first seed of the file, in case no one else is connected.
 
-  // Database options
-  DATABASE_URL: process.env.DATABASE_URL || 'mongodb://localhost/arxivum-dev',
+The webseed is a public HTTP server, so the files are AES-256 encrypted in the backend for distribution. Only users with a valid access key (registered users) can get the key to decrypt the files when downloading to disk or streaming.
 
-  // Initial admin email for the database. Move to first migration ?
-  ADMIN_EMAIL: process.env.ADMIN_EMAIL || 'admin@admin',
-  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || 'admin',
+## Deploy from docker images
+Links:
+- Tracker https://hub.docker.com/r/albertoferbcn/arxivum-tracker/
+- API https://hub.docker.com/r/albertoferbcn/arxivum-api/
+- Webseed https://hub.docker.com/r/albertoferbcn/arxivum-webseed/
 
-  // Security options
-  // JWT_SECRET: process.env.JWT_SECRET || 's0m3th1nG_R4nd0M' + Math.round(Math.random() * 100),
-  JWT_SECRET: process.env.JWT_SECRET || 's0m3th1nG_R4nd0M',
+These images are configured via enviroment variables. These are the variables
+that each one accepts:
+- **Api**
+  - NODE_ENV: prod, dev, ... Use prod for production environments
+  - PUBLIC_URL: The url where the frontend will be accessed
+  - DATABASE_URL: MongoDB database where to connect
+  - ADMIN_EMAIL: The admin user is created on startup using this email
+  - ADMIN_PASSWORD: Password of the admin user at the moment of creation
+  - JWT_SECRET: A secret to sign the authentication tokens.
+  - WEBSEED_FOLDER: Root folder of the files. Use /app/files by default
+  - PUBLIC_API_URL: Public URL to access this API
+  - PUBLIC_TRACKER_URL: Public URL of the tracker
+  - PUBLIC_WEBSEED_URL: Public URL of the webseed
+  - EMAILER_PORT: Al emailer options are to connect nodemailer. Port of email service
+  - EMAILER_HOST: SMTP host
+  - EMAILER_PUBLIC_EMAIL: Public email
+  - EMAILER_AUTH_USER: Authentication user
+  - EMAILER_AUTH_PASSWORD: Authentication password
 
-  // Webseed options (Maybe upload to webseed directly ?)
-  WEBSEED_FOLDER:
-    process.env.WEBSEED_FOLDER || path.resolve(__dirname, '../../files'),
+- **Tracker**
 
-  // Public url where to access this api
-  PUBLIC_API_URL: process.env.PUBLIC_URL || 'http://localhost:2000/',
+The tracker does not need to configure any environment variable
+- **Webseed**
 
-  // Where the tracker is
-  PUBLIC_TRACKER_URL: process.env.PUBLIC_TRACKER_URL || 'ws://localhost:2000',
+The webseed foes not need any environment variable, but it needs to share a volume with the
+API for the files. The /app/files folder is the default folder where files will go inside
+both of the modules. Make sure these folders point to the same volume on disk.
 
-  // Nodemailer options
-  // For now only this ones are supported
-  // https://nodemailer.com/smtp/well-known/
-  EMAILER_SMTP_SERVICE: process.env.EMAILER_SMTP_SERVICE || 'test',
-  EMAILER_PUBLIC_EMAIL: process.env.EMAILER_PUBLIC_USER || 'test@test',
-  EMAILER_AUTH_USER: process.env.EMAILER_AUTH_EMAIL || 'test@test',
-  EMAILER_AUTH_PASSWORD: process.env.EMAILER_AUTH_PASSWORD || 'test'
-}
+## Deploy from source code (Not recommended)
 
-module.exports = config
-```
+## Testing
