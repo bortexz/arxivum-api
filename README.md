@@ -1,3 +1,8 @@
+## Not maintaned
+This project is not being developed anymore, please don't use it!
+
+Feel free to copy / fork it and update it. Open to answer any questions about it
+
 # Arxivum Backend
 This repository contains the different modules of the backend of the Arxivum project.
 
